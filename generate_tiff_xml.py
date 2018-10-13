@@ -1,19 +1,30 @@
 # coding: utf-8
 
-import os
-import json
-from copy import deepcopy
-import shutil
+"""
+   基于已审核的细胞图像文件名生成对应大图的 xml， xml 包含信息为对应大图里的已审核细胞位置
+   细胞图像包含其来源大图名称，如
+    # 1-p0.0000_markedAs_ASCH_2017-10-27-16_12_50_x9659_y28027_w616_h331.jpg
+    # 1-p0.0000_markedAs_CC_2018-03-27-23_18_27_x5675_y23431_w230_h207_4x.jpg
+    # 1-p0.0000_markedAs_ACTINO_2018-06-20_18_37_06_x34602_y10123_w145_h172_2x.jpg
+    # 1-p0.0000_2017-11-24-13_16_54_x6626_y35845_w150_h79_4x.jpg
+    # 1-p0.0001_2017-10-09-17_12_28_x19230_y29594_w370_h910_.jpg
+    # m1_2018-04-04-17_50_08_x11194_y33583_w163_h112.jpg
+    # m1_2018-06-20_18_37_06_x10880_y42947_w113_h122.jpg
 
-from utils import FilesScanner, generate_top_level_xml, cal_IOU, get_location_from_filename, generate_name_path_dict
-from constants import METADATA_FILE_PATH, AGC_CLASSES, TRAIN_DATA_SAVE_PATH, TIFF_IMAGE_RESOURCE_PATH, \
-    ACCEPTED_OVERLAPPED_RATIO
+"""
+
+import json
+import os
+from copy import deepcopy
+
+from constants import METADATA_FILE_PATH, AGC_CLASSES, CHECKED_CELL_XML_SAVE_PATH, ACCEPTED_OVERLAPPED_RATIO
+from utils import FilesScanner, generate_checked_level_xml, cal_IOU, get_location_from_filename, generate_name_path_dict
 
 if not os.path.exists(METADATA_FILE_PATH):
     os.makedirs(METADATA_FILE_PATH, exist_ok=True)
 
-if not os.path.exists(TRAIN_DATA_SAVE_PATH):
-    os.makedirs(TRAIN_DATA_SAVE_PATH, exist_ok=True)
+if not os.path.exists(CHECKED_CELL_XML_SAVE_PATH):
+    os.makedirs(CHECKED_CELL_XML_SAVE_PATH, exist_ok=True)
 
 
 def get_cell_image(path, ctype, parent_pathes):
@@ -130,7 +141,7 @@ def generate_xml_file(points_collection):
         print("\nProcessing %s / %s %s" % (count + 1, size, parent_file_name))
 
         # TIFF 文件本地存储路径
-        save_path = os.path.join(TRAIN_DATA_SAVE_PATH, parent_file_name)
+        save_path = os.path.join(CHECKED_CELL_XML_SAVE_PATH, parent_file_name)
 
         # 当本地文件不存在时从远程服务器下载该文件
         if not os.path.exists(save_path):
@@ -140,10 +151,10 @@ def generate_xml_file(points_collection):
             pass
 
         # 生成大图对应 细胞标注点 xml 文件
-        xml_file_name = os.path.join(TRAIN_DATA_SAVE_PATH, parent_name + '.xml')
+        xml_file_name = os.path.join(CHECKED_CELL_XML_SAVE_PATH, parent_name + '.xml')
         print('GENERATE XML %s' % xml_file_name)
         if len(value) > 0:
-            generate_top_level_xml(xml_file_name, value)
+            generate_checked_level_xml(xml_file_name, value)
 
         count += 1
 

@@ -7,10 +7,12 @@
 # 当前可识别病理类型 length = 12
 import os
 
-PATHOLOGY_TYPE_CLASSES = ["HSIL", "ASCH", "LSIL", "ASCUS", "SCC", "EC", "AGC", "FUNGI", "TRI", "CC", "ACTINO", "VIRUS", "MC", "SC", "RC", "GEC", ]
+PATHOLOGY_TYPE_CLASSES = ["HSIL", "ASCH", "LSIL", "ASCUS", "SCC", "EC", "AGC", "FUNGI", "TRI", "CC", "ACTINO", "VIRUS",
+                          "MC", "SC", "RC", "GEC", ]
 
 # 病理类型对应颜色 length = 12
-PATHOLOGY_TYPE_COLORS = ["#aa0000", "#aa007f", "#005500", "#00557f", "#0055ff", "#aa55ff", "#ff5500", "#00aa00", "#00aa7f", "#00aaff", "#55aa00", "#55aa7f", "#000000", "#aa00ff", "#ff0000", "#aa5500", ]
+PATHOLOGY_TYPE_COLORS = ["#aa0000", "#aa007f", "#005500", "#00557f", "#0055ff", "#aa55ff", "#ff5500", "#00aa00",
+                         "#00aa7f", "#00aaff", "#55aa00", "#55aa7f", "#000000", "#aa00ff", "#ff0000", "#aa5500", ]
 
 # 统一归为 AGC 类别的病理图像类别
 AGC_CLASSES = ['AGC1', 'AGC2', 'AGC3', 'ADC']
@@ -23,6 +25,7 @@ COLOR_to_TYPE_DICT = dict(zip(PATHOLOGY_TYPE_COLORS, PATHOLOGY_TYPE_CLASSES))
 
 # 数据存储根目录
 DATA_RESOURCE_ROOT_PATH = os.path.join(os.environ['HOME'] + "/Development/DATA/TRAIN_DATA")
+# DATA_RESOURCE_ROOT_PATH = os.path.join("C:/" + "/Development/DATA/TRAIN_DATA")
 
 # 病理图像本地资源库路径
 TIFF_IMAGE_RESOURCE_PATH = os.path.join(DATA_RESOURCE_ROOT_PATH, "TIFFS")
@@ -30,8 +33,11 @@ TIFF_IMAGE_RESOURCE_PATH = os.path.join(DATA_RESOURCE_ROOT_PATH, "TIFFS")
 # 中间数据文件生成目录
 METADATA_FILE_PATH = os.path.join(DATA_RESOURCE_ROOT_PATH, "META")
 
-# 训练 xml 数据保存目录
-TRAIN_DATA_SAVE_PATH = os.path.join(DATA_RESOURCE_ROOT_PATH, "XMLS")
+# 审阅后 xml 数据保存目录
+CHECKED_CELL_XML_SAVE_PATH = os.path.join(DATA_RESOURCE_ROOT_PATH, "CHECKED_XMLS")
+
+# 筛选后 xml 数据保存目录
+SELECTED_CELL_XML_SAVE_PATH = os.path.join(DATA_RESOURCE_ROOT_PATH, "SELECTED_XMLS")
 
 # 训练细胞图像数据保存目录
 CELL_IMAGES_SAVE_PATH = os.path.join(DATA_RESOURCE_ROOT_PATH, "CELLS")

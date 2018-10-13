@@ -2,7 +2,8 @@
 import os
 import xml
 
-from constants import CELL_IMAGES_SAVE_PATH, PATHOLOGY_TYPE_CLASSES, CELL_COUNT_FILE_NAME, TRAIN_DATA_SAVE_PATH, DATA_RESOURCE_ROOT_PATH
+from constants import PATHOLOGY_TYPE_CLASSES, CELL_COUNT_FILE_NAME, CHECKED_CELL_XML_SAVE_PATH, \
+    DATA_RESOURCE_ROOT_PATH
 from utils import FilesScanner
 
 
@@ -75,4 +76,4 @@ def count_from_xml(xmls_path, save_path=DATA_RESOURCE_ROOT_PATH):
 
 if __name__ == '__main__':
     # 获取 xml 文件路径列表
-    count_from_xml(TRAIN_DATA_SAVE_PATH)
+    count_from_xml(CHECKED_CELL_XML_SAVE_PATH)

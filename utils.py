@@ -63,7 +63,7 @@ class FilesScanner(object):
         return self.files
 
 
-def generate_top_level_xml(filename, point_lst):
+def generate_checked_level_xml(filename, point_lst):
     """
     生成大图对应审核细胞位置 xml 文件
     :param filename: 待生成 xml 文件存放路径【包含文件名】
@@ -103,6 +103,65 @@ def generate_top_level_xml(filename, point_lst):
             "Name": point['name'],
             "Type": point['cell_type'],
             "Path": point['cell_path'],
+            "X": "%s" % x,
+            "Y": "%s" % y,
+            "W": "%s" % w,
+            "H": "%s" % h,
+        }
+
+        coords = [
+            (0, x, y),
+            (1, x + w, y),
+            (2, x + w, y + h),
+            (3, x, y + h),
+        ]
+
+        for coord in coords:
+            coordinate = ET.SubElement(coordinates, "Coordinate")
+            coordinate.attrib = {"Order": "%s" % coord[0], "X": "%s" % coord[1], "Y": "%s" % coord[2]}
+
+        cell_count += 1
+
+    # 存在细胞时写入文件
+    if cell_count > 0:
+        ET.SubElement(root, "AnnotationGroups")
+        raw_string = ET.tostring(root, "utf-8")
+        reparsed = xml.dom.minidom.parseString(raw_string)
+
+        with open(filename, "w") as file:
+            file.write(reparsed.toprettyxml(indent="\t"))
+
+
+def generate_selected_level_xml(filename, point_lst):
+    """
+    生成大图对应筛选细胞位置 xml 文件
+    :param filename: 待生成 xml 文件存放路径【包含文件名】
+    :param point_lst: 待写入细胞位置列表，包含 x, y, w, h
+    :return: None
+    """
+    root = ET.Element("ASAP_Annotations")
+    annotations = ET.SubElement(root, "Annotations")
+
+    cell_count = 0
+    for i, point in enumerate(point_lst):
+        cell_type = point['cell_type']
+        assert cell_type in TYPE_to_COLOR_DICT, "THE CELL_TYPE [%s] IS NOT EXIST!"
+
+        annotation = ET.SubElement(annotations, "Annotation")
+        annotation.attrib = {
+            "Color": TYPE_to_COLOR_DICT[cell_type],
+            "Name": "Annotation %s" % i,
+            "PartOfGroup": "None",
+            "Type": "Polygon"
+        }
+
+        x, y, w, h = int(point['x']), int(point['y']), int(point['w']), int(point['h'])
+        cell = ET.SubElement(annotation, "Cell")
+
+        coordinates = ET.SubElement(annotation, "Coordinates")
+        cell.attrib = {
+            "Name": point['name'],
+            "Type": point['cell_type'],
             "X": "%s" % x,
             "Y": "%s" % y,
             "W": "%s" % w,
@@ -199,7 +258,7 @@ def generate_name_path_dict(path, postfix=None, output_file_path=None):
     """
     获取大图文件路径 key: value = 文件名：文件路径
     :param path: 待检索文件路径列表
-    :param output_file_path: 将生成字典结果写入文件
+    :param output_file_path: 将生成字典结果写入本地的文件路径，含文件名称
     :param postfix: 回收文件类型 ['.tif', '.kfb']
     :return: {filename: file_abs_path}
     """

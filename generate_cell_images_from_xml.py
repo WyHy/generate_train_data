@@ -1,14 +1,23 @@
 # coding: utf-8
+
+"""
+    基于已生成的大图对应的 xml 文件，从大图中读取并保存已审阅细胞图像
+    按照 大图名称_x_y_w_h_s 信息进行命名，如
+    2018-06-20_18_59_33_x8656_y46722_w91_h181_s15.jpg
+
+    生成细胞图像供算法人员进行细胞筛选
+"""
+
 import os
 import xml
-import openslide
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
-from constants import CELL_IMAGES_SAVE_PATH, TRAIN_DATA_SAVE_PATH, TIFF_IMAGE_RESOURCE_PATH, TIFF_OPEN_FAIL_RECORDS, \
+import openslide
+
+from constants import CELL_IMAGES_SAVE_PATH, CHECKED_CELL_XML_SAVE_PATH, TIFF_IMAGE_RESOURCE_PATH, TIFF_OPEN_FAIL_RECORDS, \
     DATA_RESOURCE_ROOT_PATH
 from tslide.tslide import TSlide
-
-from utils import copy_remote_file_to_local, FilesScanner
+from utils import FilesScanner
 
 if not os.path.exists(CELL_IMAGES_SAVE_PATH):
     os.makedirs(CELL_IMAGES_SAVE_PATH, exist_ok=True)
@@ -77,7 +86,7 @@ def generate_image_from_xml(xml_path, cell_save_path):
 if __name__ == '__main__':
     # xmls_path = TRAIN_DATA_SAVE_PATH
     # 获取 xml 文件路径列表
-    xmls = FilesScanner(TRAIN_DATA_SAVE_PATH, ['.xml']).get_files()
+    xmls = FilesScanner(CHECKED_CELL_XML_SAVE_PATH, ['.xml']).get_files()
 
     size = len(xmls)
 
