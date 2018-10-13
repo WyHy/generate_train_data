@@ -5,8 +5,10 @@
 """
 import os
 import re
+from concurrent.futures import ProcessPoolExecutor, as_completed
+
 from utils import FilesScanner, generate_selected_level_xml
-from constants import SELECTED_CELL_XML_SAVE_PATH, CELL_IMAGES_SAVE_PATH
+from constants import SELECTED_CELL_XML_SAVE_PATH, CELL_IMAGES_SAVE_PATH, MAX_CPU_WORKERS
 
 if not os.path.exists(SELECTED_CELL_XML_SAVE_PATH):
     os.makedirs(SELECTED_CELL_XML_SAVE_PATH, exist_ok=True)
@@ -34,20 +36,24 @@ if __name__ == '__main__':
             tiff_cell_dict[tiff_name] = [{"x": x, "y": y, "w": w, "h": h, "cell_type": cell_type}]
 
     dict_size = len(tiff_cell_dict)
-    count = 0
     print("START GENERATING XML FILES...")
+
+    executor = ProcessPoolExecutor(max_workers=MAX_CPU_WORKERS)
+    tasks = []
     for key, value in tiff_cell_dict.items():
         # 生成大图对应 筛选后的细胞标注点 xml 文件
 
         xml_file_name = os.path.join(SELECTED_CELL_XML_SAVE_PATH, key + '.xml')
         
         if len(value) > 0:
-            print('PROCESSING %s / %s \nGENERATE XML %s' % (count, dict_size, xml_file_name))
-            generate_selected_level_xml(xml_file_name, value)
+            tasks.append(executor.submit(generate_selected_level_xml, xml_file_name, value))
         else:
             print("FOUND 0 CELLS IN TIFF %s" % tiff_name)
 
-        count += 1
+    job_count = len(tasks)
+    for future in as_completed(tasks):
+        job_count -= 1
+        print("LAST JOB NUM %s" % job_count)
 
     print("TIFF COUNT: %s" % dict_size)
     print("CELL COUNT: %s" % len(cell_images_lst))

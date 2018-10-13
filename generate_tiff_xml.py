@@ -16,6 +16,7 @@
 import json
 import os
 from copy import deepcopy
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
 from constants import METADATA_FILE_PATH, AGC_CLASSES, CHECKED_CELL_XML_SAVE_PATH, ACCEPTED_OVERLAPPED_RATIO
 from utils import FilesScanner, generate_checked_level_xml, cal_IOU, get_location_from_filename, generate_name_path_dict
