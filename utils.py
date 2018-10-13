@@ -160,7 +160,6 @@ def generate_selected_level_xml(filename, point_lst):
 
         coordinates = ET.SubElement(annotation, "Coordinates")
         cell.attrib = {
-            "Name": point['name'],
             "Type": point['cell_type'],
             "X": "%s" % x,
             "Y": "%s" % y,
