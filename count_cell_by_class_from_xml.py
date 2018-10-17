@@ -44,6 +44,7 @@ def count_from_xml(xmls_path, save_path=DATA_RESOURCE_ROOT_PATH):
 
             return class_count
 
+    cells_count_by_xml = {}
     for index, path in enumerate(xmls):
         print("%s / %s %s" % (index + 1, size, os.path.basename(path)))
 
@@ -51,6 +52,8 @@ def count_from_xml(xmls_path, save_path=DATA_RESOURCE_ROOT_PATH):
         collection = DOMTree.documentElement
 
         annotations = collection.getElementsByTagName("Annotation")
+        cells_count_by_xml[os.path.basename(path)] = len(annotations)
+
         for index, annotation in enumerate(annotations):
             cell = annotation.getElementsByTagName("Cell")[0]
             class_type = cell.getAttribute("Type")
@@ -70,6 +73,11 @@ def count_from_xml(xmls_path, save_path=DATA_RESOURCE_ROOT_PATH):
         print("total xml\t%s" % size)
 
     print("COUNT RESULTS IS WRITED TO %s" % count_file_save_path)
+
+    count_by_file_save_path = os.path.join(save_path, "cell_count_by_xml.txt")
+    with open(count_by_file_save_path, 'w') as o:
+        for key, value in cells_count_by_xml.items():
+            o.write("%s\t%s\n" % (key, value))
 
     return class_count
 
