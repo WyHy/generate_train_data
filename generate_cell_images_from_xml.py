@@ -37,7 +37,7 @@ def generate_image_from_xml(xml_path, cell_save_path):
     parent = collection.getElementsByTagName("Annotations")[0]
     # 原始大图路径
     tiff_file_name = parent.getAttribute("Name")
-    tiff_file_path = os.path.join(TIFF_IMAGE_RESOURCE_PATH, parent.getAttribute("FullName"))
+    tiff_file_path = os.path.join(TIFF_IMAGE_RESOURCE_PATH, parent.getAttribute("FullName").replace(" ", '-'))
 
     annotations = collection.getElementsByTagName("Annotation")
 

@@ -18,7 +18,7 @@ import os
 from copy import deepcopy
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
-from constants import METADATA_FILE_PATH, AGC_CLASSES, CHECKED_CELL_XML_SAVE_PATH, ACCEPTED_OVERLAPPED_RATIO
+from constants import METADATA_FILE_PATH, AGC_CLASSES, CHECKED_CELL_XML_SAVE_PATH, ACCEPTED_OVERLAPPED_RATIO, TIFF_IMAGE_RESOURCE_PATH
 from utils import FilesScanner, generate_checked_level_xml, cal_IOU, get_location_from_filename, generate_name_path_dict
 
 if not os.path.exists(METADATA_FILE_PATH):
@@ -142,7 +142,7 @@ def generate_xml_file(points_collection):
         print("\nProcessing %s / %s %s" % (count + 1, size, parent_file_name))
 
         # TIFF 文件本地存储路径
-        save_path = os.path.join(CHECKED_CELL_XML_SAVE_PATH, parent_file_name)
+        save_path = os.path.join(TIFF_IMAGE_RESOURCE_PATH, parent_file_name)
 
         # 当本地文件不存在时从远程服务器下载该文件
         if not os.path.exists(save_path):
@@ -192,6 +192,12 @@ if __name__ == '__main__':
                     print('ERROR')
                 else:
                     tif_images[name] = path
+
+    if not tif_images:
+        print("NO TIFF FILES FOUND!")
+        exit()
+    else:
+        print("GOT %s TIFF FILES" % len(tif_images))
 
     # 2. 生成大图与细胞位置信息文件路径字典
     # 人工标注细胞信息
