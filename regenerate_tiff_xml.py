@@ -29,6 +29,8 @@ if __name__ == '__main__':
         cell_type = os.path.basename(os.path.dirname(path))
         jpg = os.path.basename(path)
         point = re.findall(pattern, jpg)
+        if not point:
+            print(path)
         tiff_name, x, y, w, h, _ = point[0]
         if tiff_name in tiff_cell_dict:
             tiff_cell_dict[tiff_name].append({"x": x, "y": y, "w": w, "h": h, "cell_type": cell_type})

@@ -3,6 +3,7 @@
 import os
 import re
 import shutil
+import random
 import xml.dom.minidom
 import xml.etree.ElementTree as ET
 
@@ -275,7 +276,16 @@ def generate_name_path_dict(path, postfix=None, output_file_path=None):
     dict_ = {}
     for file in files_collection:
         key, _ = os.path.splitext(os.path.basename(file))
-        dict_[key] = file
+        key = key.replace(" ", "-")
+
+        if key in dict_:
+            value = dict_[key]
+            if value.endswith('.kfb'):
+                pass
+            else:
+                dict_[key] = file
+        else:
+            dict_[key] = file
 
     # 如果存在输出路径则写入本地文件
     if output_file_path:
@@ -317,6 +327,14 @@ def copy_remote_file_to_local(remote_file_path, local_file_path=TIFF_IMAGE_RESOU
         return local_file_path
     else:
         return remote_file_path
+
+
+def remove_redundant_element(src_dir_path, dst_dir_path, limit):
+    files = os.listdir(src_dir_path)
+
+    random.shuffle(files)
+    for file in files[limit:]:
+        shutil.move(os.path.join(src_dir_path, file), dst_dir_path)
 
 
 if __name__ == '__main__':
