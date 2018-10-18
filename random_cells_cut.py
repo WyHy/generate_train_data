@@ -10,8 +10,22 @@ from utils import FilesScanner
 
 KFB_DIR = ""
 NORMAL_CELLS_DIR = ""
+
+
+# 输入 TIFF 文件路径
+TIFF_FILE_DIR = ''
+# 输出切图存放路径
+PATCH_SAVE_DIR = ''
+# 切图起点
+START_RANGE = 0.2
+# 切图终点
+END_RANGE = 0.8
+# 单张病理图像切图数量
 PATCH_NUM_NEED = 10
+# 切图尺寸
 PATCH_SIZE = 1216
+# 最大开启进程数
+PROCESS_NUM_LIMIT = 3
 
 
 def worker(tiff_file_path, patch_save_path, patch_range=(0, 1), patch_num_need=PATCH_NUM_NEED, path_size=(PATCH_SIZE, PATCH_SIZE)):
@@ -95,13 +109,4 @@ def random_cells_cut_progress(in_dir, out_path, start, end, num, size,):
 
 
 if __name__ == '__main__':
-    # 输入 TIFF 文件路径
-    tiff_file_dir = ''
-    # 输出切图存放路径
-    patch_save_dir = ''
-    # 切图起点
-    start = 0.2
-    # 切图终点
-    end = 0.8
-
-    random_cells_cut_progress(tiff_file_dir, patch_save_dir, start, end, PATCH_NUM_NEED, PATCH_SIZE)
+    random_cells_cut_progress(TIFF_FILE_DIR, PATCH_SAVE_DIR, START_RANGE, END_RANGE, PATCH_NUM_NEED, PATCH_SIZE)
