@@ -254,6 +254,8 @@ def get_location_from_filename(filename_string):
         return None
 
 
+# TO-DO
+# 添加同名不同格式文件可辨识性
 def generate_name_path_dict(path, postfix=None, output_file_path=None):
     """
     获取大图文件路径 key: value = 文件名：文件路径
