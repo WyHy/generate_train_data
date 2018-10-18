@@ -8,10 +8,6 @@ from tslide.tslide import TSlide
 
 from utils import FilesScanner
 
-KFB_DIR = ""
-NORMAL_CELLS_DIR = ""
-
-
 # 输入 TIFF 文件路径
 TIFF_FILE_DIR = ''
 # 输出切图存放路径
