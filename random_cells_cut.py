@@ -14,11 +14,12 @@ PATCH_NUM_NEED = 10
 PATCH_SIZE = 1216
 
 
-def worker(tiff_file_path, patch_save_path, patch_num_need=PATCH_NUM_NEED, path_size=(PATCH_SIZE, PATCH_SIZE)):
+def worker(tiff_file_path, patch_save_path, patch_range=(0, 1), patch_num_need=PATCH_NUM_NEED, path_size=(PATCH_SIZE, PATCH_SIZE)):
     """
     随机切图 worker，
     :param tiff_file_path: TIFF 文件路径
     :param patch_save_path:  切图存放路径
+    :param patch_range:  切图范围，默认（0，1）全幅图像
     :param patch_num_need:  随机切图数量
     :param path_size:  随机切图尺寸 （1024， 1024）
     :return:
@@ -37,10 +38,10 @@ def worker(tiff_file_path, patch_save_path, patch_num_need=PATCH_NUM_NEED, path_
     width, height = slide.dimensions
 
     # 获取随机坐标列表 x_lst
-    x_lst = [int(random.random() * width) for _ in range(patch_num_need)]
+    x_lst = [int(random.uniform(patch_range[0], patch_range[1]) * width) for _ in range(patch_num_need)]
 
     # 获取随机坐标列表 y_lst
-    y_lst = [int(random.random() * height) for _ in range(patch_num_need)]
+    y_lst = [int(random.uniform(patch_range[0], patch_range[1]) * height) for _ in range(patch_num_need)]
 
     random_point_lst = list(zip(x_lst, y_lst))
 
@@ -60,11 +61,13 @@ def worker(tiff_file_path, patch_save_path, patch_num_need=PATCH_NUM_NEED, path_
     return 0, None
 
 
-def random_cells_cut_progress(in_dir, out_path, num, size):
+def random_cells_cut_progress(in_dir, out_path, start, end, num, size,):
     """
     多进程切图方法
     :param in_dir: 输入 TIFF 文件路径
     :param out_path: 输出 PATCH 存放路径
+    :param start: 切图范围起点
+    :param end: 切图范围终点
     :param num: 单文件所需切图数量
     :param size: 切图文件大小
     :return:
@@ -76,7 +79,7 @@ def random_cells_cut_progress(in_dir, out_path, num, size):
     executor = ProcessPoolExecutor(max_workers=20)
     tasks = []
     for index, path in enumerate(kfbs):
-        tasks.append(executor.submit(worker, path, out_path, num, (size, size)))
+        tasks.append(executor.submit(worker, path, out_path, (start, end), num, (size, size)))
 
     job_count = len(tasks)
 
@@ -96,5 +99,9 @@ if __name__ == '__main__':
     tiff_file_dir = ''
     # 输出切图存放路径
     patch_save_dir = ''
-    
-    random_cells_cut_progress(tiff_file_dir, patch_save_dir, PATCH_NUM_NEED, PATCH_SIZE)
+    # 切图起点
+    start = 0.2
+    # 切图终点
+    end = 0.8
+
+    random_cells_cut_progress(tiff_file_dir, patch_save_dir, start, end, PATCH_NUM_NEED, PATCH_SIZE)
