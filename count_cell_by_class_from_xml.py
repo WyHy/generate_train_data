@@ -75,6 +75,7 @@ def count_from_xml(xmls_path, save_path=DATA_RESOURCE_ROOT_PATH):
     print("COUNT RESULTS IS WRITED TO %s" % count_file_save_path)
 
     count_by_file_save_path = os.path.join(save_path, "cell_count_by_xml.txt")
+    print(count_by_file_save_path)
     with open(count_by_file_save_path, 'w') as o:
         for key, value in cells_count_by_xml.items():
             o.write("%s\t%s\n" % (key, value))
