@@ -17,13 +17,13 @@ import openslide
 from constants import CELL_IMAGES_SAVE_PATH, CHECKED_CELL_XML_SAVE_PATH, TIFF_IMAGE_RESOURCE_PATH, TIFF_OPEN_FAIL_RECORDS, \
     DATA_RESOURCE_ROOT_PATH, SELECTED_CELL_XML_SAVE_PATH
 from tslide.tslide import TSlide
-from utils import FilesScanner
+from utils import FilesScanner, generate_name_path_dict
 
 if not os.path.exists(CELL_IMAGES_SAVE_PATH):
     os.makedirs(CELL_IMAGES_SAVE_PATH, exist_ok=True)
 
 
-def generate_image_from_xml(xml_path, cell_save_path):
+def generate_image_from_xml(xml_path, cell_save_path, tiff_dict):
     """
     从 xml 文件解析大图标注点坐标,生成细胞文件
     :param xml_path: xml 文件路径
@@ -37,7 +37,14 @@ def generate_image_from_xml(xml_path, cell_save_path):
     parent = collection.getElementsByTagName("Annotations")[0]
     # 原始大图路径
     tiff_file_name = parent.getAttribute("Name")
-    tiff_file_path = os.path.join(TIFF_IMAGE_RESOURCE_PATH, parent.getAttribute("FullName").replace(" ", '-'))
+    # tiff_file_path = os.path.join(TIFF_IMAGE_RESOURCE_PATH, parent.getAttribute("FullName").replace(" ", '-'))
+    xml_name, _ = os.path.splitext(os.path.basename(xml_path))
+    if xml_name not in tiff_dict:
+        print(xml_name, 'NOT FOUND!')
+        exit()
+
+
+    tiff_file_path = tiff_dict[xml_name]
 
     annotations = collection.getElementsByTagName("Annotation")
 
@@ -95,8 +102,11 @@ if __name__ == '__main__':
 
     executor = ProcessPoolExecutor(max_workers=20)
     tasks = []
+
+    tiff_dict = generate_name_path_dict('', ['.tif', '.kfb'])
+
     for index, file in enumerate(xmls):
-        tasks.append(executor.submit(generate_image_from_xml, file, CELL_IMAGES_SAVE_PATH))
+        tasks.append(executor.submit(generate_image_from_xml, file, CELL_IMAGES_SAVE_PATH, tiff_dict))
 
         # print("%s / %s %s" % (index + 1, size, os.path.basename(file)))
         # generate_image_from_xml(file, CELL_IMAGES_SAVE_PATH)
