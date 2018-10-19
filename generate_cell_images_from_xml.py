@@ -62,14 +62,16 @@ def generate_image_from_xml(xml_path, cell_save_path):
         w = int(cell.getAttribute("W"))
         h = int(cell.getAttribute("H"))
 
-        center_x = x + int(w / 2)
-        center_y = y + int(h / 2)
+        # center_x = x + int(w / 2)
+        # center_y = y + int(h / 2)
+        #
+        # line_length = max(w, h)
 
-        line_length = max(w, h)
+        # x_ = center_x - int(line_length / 2)
+        # y_ = center_y - int(line_length / 2)
+        # w_, h_ = line_length, line_length
 
-        x_ = center_x - int(line_length / 2)
-        y_ = center_y - int(line_length / 2)
-        w_, h_ = line_length, line_length
+        x_, y_, w_, h_ = x, y, w, h
 
         class_type = cell.getAttribute("Type")
 
