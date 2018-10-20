@@ -15,8 +15,9 @@ if not os.path.exists(SELECTED_CELL_XML_SAVE_PATH):
 
 if __name__ == '__main__':
     # 读取指定位置的算法人员筛选后的细胞文件路径
-    cell_images_path = CELL_IMAGES_SAVE_PATH
+    # cell_images_path = CELL_IMAGES_SAVE_PATH
 
+    cell_images_path = '/home/cnn/Development/DATA/TRAIN_DATA/20181012_NORMAL'
     print("SCANNING PATH %s..." % cell_images_path)
     cell_images_lst = FilesScanner(cell_images_path, ['.jpg']).get_files()
 

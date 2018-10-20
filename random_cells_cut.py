@@ -103,6 +103,8 @@ def random_cells_cut_progress(in_dir, out_path, start, end, num, size,):
         job_count -= 1
         print("LAST JOB NUM %s" % job_count)
 
+    print('\n'.join(fail_task_collection))
+
 
 if __name__ == '__main__':
     random_cells_cut_progress(TIFF_FILE_DIR, PATCH_SAVE_DIR, START_RANGE, END_RANGE, PATCH_NUM_NEED, PATCH_SIZE)

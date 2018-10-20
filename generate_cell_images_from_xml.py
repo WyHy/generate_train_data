@@ -15,15 +15,15 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 import openslide
 
 from constants import CELL_IMAGES_SAVE_PATH, CHECKED_CELL_XML_SAVE_PATH, TIFF_IMAGE_RESOURCE_PATH, TIFF_OPEN_FAIL_RECORDS, \
-    DATA_RESOURCE_ROOT_PATH
+    DATA_RESOURCE_ROOT_PATH, SELECTED_CELL_XML_SAVE_PATH
 from tslide.tslide import TSlide
-from utils import FilesScanner
+from utils import FilesScanner, generate_name_path_dict
 
 if not os.path.exists(CELL_IMAGES_SAVE_PATH):
     os.makedirs(CELL_IMAGES_SAVE_PATH, exist_ok=True)
 
 
-def generate_image_from_xml(xml_path, cell_save_path):
+def generate_image_from_xml(xml_path, cell_save_path, tiff_dict):
     """
     从 xml 文件解析大图标注点坐标,生成细胞文件
     :param xml_path: xml 文件路径
@@ -37,11 +37,18 @@ def generate_image_from_xml(xml_path, cell_save_path):
     parent = collection.getElementsByTagName("Annotations")[0]
     # 原始大图路径
     tiff_file_name = parent.getAttribute("Name")
-    tiff_file_path = os.path.join(TIFF_IMAGE_RESOURCE_PATH, parent.getAttribute("FullName").replace(" ", '-'))
+    # tiff_file_path = os.path.join(TIFF_IMAGE_RESOURCE_PATH, parent.getAttribute("FullName").replace(" ", '-'))
+    xml_name, _ = os.path.splitext(os.path.basename(xml_path))
+    if xml_name not in tiff_dict:
+        print(xml_name, 'NOT FOUND!')
+        exit()
+
+
+    tiff_file_path = tiff_dict[xml_name]
 
     annotations = collection.getElementsByTagName("Annotation")
 
-    # 
+    # 打开失败的 TIFF 图像列表
     open_fail_records = []
     # 打开 TIFF 文件
     try:
@@ -62,14 +69,16 @@ def generate_image_from_xml(xml_path, cell_save_path):
         w = int(cell.getAttribute("W"))
         h = int(cell.getAttribute("H"))
 
-        center_x = x + int(w / 2)
-        center_y = y + int(h / 2)
+        # center_x = x + int(w / 2)
+        # center_y = y + int(h / 2)
+        #
+        # line_length = max(w, h)
 
-        line_length = max(w, h)
+        # x_ = center_x - int(line_length / 2)
+        # y_ = center_y - int(line_length / 2)
+        # w_, h_ = line_length, line_length
 
-        x_ = center_x - int(line_length / 2)
-        y_ = center_y - int(line_length / 2)
-        w_, h_ = line_length, line_length
+        x_, y_, w_, h_ = x, y, w, h
 
         class_type = cell.getAttribute("Type")
 
@@ -86,14 +95,18 @@ def generate_image_from_xml(xml_path, cell_save_path):
 if __name__ == '__main__':
     # xmls_path = TRAIN_DATA_SAVE_PATH
     # 获取 xml 文件路径列表
-    xmls = FilesScanner(CHECKED_CELL_XML_SAVE_PATH, ['.xml']).get_files()
+    # xmls = FilesScanner(CHECKED_CELL_XML_SAVE_PATH, ['.xml']).get_files()
+    xmls = FilesScanner(SELECTED_CELL_XML_SAVE_PATH, ['.xml']).get_files()
 
     size = len(xmls)
 
     executor = ProcessPoolExecutor(max_workers=20)
     tasks = []
+
+    tiff_dict = generate_name_path_dict('', ['.tif', '.kfb'])
+
     for index, file in enumerate(xmls):
-        tasks.append(executor.submit(generate_image_from_xml, file, CELL_IMAGES_SAVE_PATH))
+        tasks.append(executor.submit(generate_image_from_xml, file, CELL_IMAGES_SAVE_PATH, tiff_dict))
 
         # print("%s / %s %s" % (index + 1, size, os.path.basename(file)))
         # generate_image_from_xml(file, CELL_IMAGES_SAVE_PATH)
@@ -113,4 +126,4 @@ if __name__ == '__main__':
         for record in tiff_read_fail_records:
             o.write("%s\n" % record)
 
-    print("THERE %s TIFF FILE READ FILE, PLEASE CHECK => %s" % write_to)
+    print("THERE %s TIFF FILE READ FILE, PLEASE CHECK!" % write_to)

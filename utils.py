@@ -4,11 +4,11 @@ import os
 import re
 import shutil
 import random
-import xml.dom.minidom
+from xml.dom.minidom import parse, parseString
 import xml.etree.ElementTree as ET
 
 from constants import TYPE_to_COLOR_DICT, PATHOLOGY_TYPE_CLASSES, TIFF_IMAGE_RESOURCE_PATH, \
-    REMOTE_PATH_FLAG
+    REMOTE_PATH_FLAG, LABELME_DEFAULT_IMAGE_SIZE, LABELME_DEFAULT_XML_OUTPUT_PATH
 
 
 def get_path_postfix(filename):
@@ -127,7 +127,7 @@ def generate_checked_level_xml(filename, point_lst):
     if cell_count > 0:
         ET.SubElement(root, "AnnotationGroups")
         raw_string = ET.tostring(root, "utf-8")
-        reparsed = xml.dom.minidom.parseString(raw_string)
+        reparsed = parseString(raw_string)
 
         with open(filename, "w") as file:
             file.write(reparsed.toprettyxml(indent="\t"))
@@ -137,7 +137,7 @@ def generate_selected_level_xml(filename, point_lst):
     """
     生成大图对应筛选细胞位置 xml 文件
     :param filename: 待生成 xml 文件存放路径【包含文件名】
-    :param point_lst: 待写入细胞位置列表，包含 x, y, w, h
+    :param point_lst: 待写入细胞位置列表，包含 cell_type, , y, w, h
     :return: None
     """
     root = ET.Element("ASAP_Annotations")
@@ -185,7 +185,7 @@ def generate_selected_level_xml(filename, point_lst):
     if cell_count > 0:
         ET.SubElement(root, "AnnotationGroups")
         raw_string = ET.tostring(root, "utf-8")
-        reparsed = xml.dom.minidom.parseString(raw_string)
+        reparsed = parseString(raw_string)
 
         with open(filename, "w") as file:
             file.write(reparsed.toprettyxml(indent="\t"))
@@ -332,11 +332,104 @@ def copy_remote_file_to_local(remote_file_path, local_file_path=TIFF_IMAGE_RESOU
 
 
 def remove_redundant_element(src_dir_path, dst_dir_path, limit):
+    """
+    移除多余细胞图像
+    :param src_dir_path: 待处理细胞文件夹
+    :param dst_dir_path:  被移除出来的细胞文件存放目录
+    :param limit: 保持数量，即需要保留的细胞数量
+    :return:
+    """
     files = os.listdir(src_dir_path)
 
     random.shuffle(files)
     for file in files[limit:]:
         shutil.move(os.path.join(src_dir_path, file), dst_dir_path)
+
+
+def read_from_labelme_xml(xml_files_path):
+    """
+    读入 xml 文件标注点信息， 来自 Labelme 的标注文件
+    :param xml_files_path:
+    :return:
+    """
+    tree = parse(xml_files_path)
+    collection = tree.documentElement
+
+    # 标注点数组
+    lst = []
+
+    objects = collection.getElementsByTagName("object")
+    for index, obj in enumerate(objects):
+        name = obj.getElementsByTagName('name')[0].childNodes[0].data
+        box = obj.getElementsByTagName('bndbox')[0]
+        xmin = box.getElementsByTagName('xmin')[0].childNodes[0].data
+        ymin = box.getElementsByTagName('ymin')[0].childNodes[0].data
+        xmax = box.getElementsByTagName('xmax')[0].childNodes[0].data
+        ymax = box.getElementsByTagName('ymax')[0].childNodes[0].data
+
+        xmin, ymin, xmax, ymax = int(xmin), int(ymin), int(xmax), int(ymax)
+        lst.append((name, xmin, ymin, xmax - xmin, ymax - ymin))
+        # lst.append({
+        #     "type": name,
+        #     "x": xmin,
+        #     "y": ymin,
+        #     "w": xmax - xmin,
+        #     "h": ymax - ymin,
+        # })
+
+    return lst
+
+
+def write_to_labelme_xml(points_dict, xml_save_path=LABELME_DEFAULT_XML_OUTPUT_PATH, image_size=LABELME_DEFAULT_IMAGE_SIZE):
+    """
+    将标注点信息写入 xml 文件， 用于 Labelme 审核
+    :param points_dict:
+    :param xml_save_path: xml 文件写入路径
+    :param image_size: 待写入的 Image 文件尺寸
+    :return:
+    """
+
+    count = 0
+    total = len(points_dict)
+
+    for key, lst in points_dict.items():
+        count += 1
+        print("GENERATE %s / %s %s ..." % (count, total, key + '.xml'))
+        root = ET.Element("annotation")
+        ET.SubElement(root, "folder").text = "folder"
+        ET.SubElement(root, "filename").text = key + ".jpg"
+        ET.SubElement(root, "path").text = "path"
+
+        source = ET.SubElement(root, "source")
+        ET.SubElement(source, "database").text = "Unknown"
+
+        size = ET.SubElement(root, "size")
+        ET.SubElement(size, "width").text = str(image_size)
+        ET.SubElement(size, "height").text = str(image_size)
+        ET.SubElement(size, "depth").text = "3"
+
+        ET.SubElement(root, "segmented").text = "0"
+
+        for point in lst:
+            object = ET.SubElement(root, "object")
+            ET.SubElement(object, "name").text = point['name']
+            ET.SubElement(object, "pose").text = "Unspecified"
+            ET.SubElement(object, "truncated").text = "0"
+            ET.SubElement(object, "difficult").text = "0"
+            bndbox = ET.SubElement(object, "bndbox")
+            ET.SubElement(bndbox, "xmin").text = str(int(point['xmin']))
+            ET.SubElement(bndbox, "ymin").text = str(int(point['ymin']))
+            ET.SubElement(bndbox, "xmax").text = str(int(point['xmax']))
+            ET.SubElement(bndbox, "ymax").text = str(int(point['ymax']))
+
+        raw_string = ET.tostring(root, "utf-8")
+        reparsed = parseString(raw_string)
+
+        if not os.path.exists(xml_save_path):
+            os.makedirs(xml_save_path)
+
+        with open(os.path.join(xml_save_path, key + ".xml"), "w") as o:
+            o.write(reparsed.toprettyxml(indent="\t"))
 
 
 if __name__ == '__main__':
