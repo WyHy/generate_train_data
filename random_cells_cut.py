@@ -8,14 +8,10 @@ from tslide.tslide import TSlide
 
 from utils import FilesScanner
 
-KFB_DIR = ""
-NORMAL_CELLS_DIR = ""
-
-
 # 输入 TIFF 文件路径
-TIFF_FILE_DIR = ''
+TIFF_FILE_DIR = '/home/tsimage/Development/data/tiff'
 # 输出切图存放路径
-PATCH_SAVE_DIR = ''
+PATCH_SAVE_DIR = '/home/tsimage/Development/data/tmp'
 # 切图起点
 START_RANGE = 0.2
 # 切图终点
