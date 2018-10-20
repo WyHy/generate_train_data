@@ -48,7 +48,7 @@ def generate_image_from_xml(xml_path, cell_save_path, tiff_dict):
 
     annotations = collection.getElementsByTagName("Annotation")
 
-    # 
+    # 打开失败的 TIFF 图像列表
     open_fail_records = []
     # 打开 TIFF 文件
     try:
@@ -126,4 +126,4 @@ if __name__ == '__main__':
         for record in tiff_read_fail_records:
             o.write("%s\n" % record)
 
-    print("THERE %s TIFF FILE READ FILE, PLEASE CHECK => %s" % write_to)
+    print("THERE %s TIFF FILE READ FILE, PLEASE CHECK!" % write_to)

@@ -24,8 +24,8 @@ TYPE_to_COLOR_DICT = dict(zip(PATHOLOGY_TYPE_CLASSES, PATHOLOGY_TYPE_COLORS))
 COLOR_to_TYPE_DICT = dict(zip(PATHOLOGY_TYPE_COLORS, PATHOLOGY_TYPE_CLASSES))
 
 # 数据存储根目录
-DATA_RESOURCE_ROOT_PATH = os.path.join(os.environ['HOME'] + "/Development/DATA/TRAIN_DATA")
-# DATA_RESOURCE_ROOT_PATH = os.path.join("C:/" + "/Development/DATA/TRAIN_DATA")
+# DATA_RESOURCE_ROOT_PATH = os.path.join(os.environ['HOME'] + "/Development/DATA/TRAIN_DATA")
+DATA_RESOURCE_ROOT_PATH = os.path.join("C:/" + "/Development/DATA/TRAIN_DATA")
 
 # 病理图像本地资源库路径
 TIFF_IMAGE_RESOURCE_PATH = os.path.join(DATA_RESOURCE_ROOT_PATH, "TIFFS")
@@ -54,7 +54,13 @@ TIFF_OPEN_FAIL_RECORDS = 'TIFF_OPEN_FAIL_RECORDS.txt'
 # 细胞计数文件名称
 CELL_COUNT_FILE_NAME = '[NOTICE]CELL_COUNT_BY_CLASS[DO NOT EDIT].txt'
 
-# 
+# 默认写入 Labelme 配置文件的 Image 大小
+LABELME_DEFAULT_IMAGE_SIZE = 608
+
+# 默认输出的 labelme xml 文件输出目录
+LABELME_DEFAULT_XML_OUTPUT_PATH = os.path.join(DATA_RESOURCE_ROOT_PATH, "Labelme", 'xmls')
+
+# 最大可用 CPU 数量
 MAX_CPU_WORKERS = 20
 
 if __name__ == '__main__':
