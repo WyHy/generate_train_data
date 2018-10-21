@@ -298,6 +298,11 @@ def generate_name_path_dict(path, postfix=None, output_file_path=None):
     return dict_
 
 
+def get_tiff_dict():
+    tif_path = '/home/tsimage/Development/DATA/tiff'
+    return generate_name_path_dict(tif_path, ['.tif', '.kfb'])
+
+
 def is_remote_path(file_path):
     """
     检测文件路径是否为远程路径

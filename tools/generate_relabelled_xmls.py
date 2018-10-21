@@ -6,11 +6,60 @@
 
 import csv
 import os
+import sys
+import shutil
+from xml.dom.minidom import parse, parseString
+import xml.etree.ElementTree as ET
 
-from utils import FilesScanner, write_to_labelme_xml
+sys.path.append('..')
+
+from utils import FilesScanner, write_to_labelme_xml, generate_name_path_dict
 
 
-def generate_labelme_format_xml(csv_files_path, xml_save_path):
+def write_to_labelme_xml(lst, xml_save_path, image_size=608):
+    """
+    将标注点信息写入 xml 文件， 用于 Labelme 审核
+    :param points_dict:
+    :param xml_save_path: xml 文件写入路径
+    :param image_size: 待写入的 Image 文件尺寸
+    :return:
+    """
+
+    root = ET.Element("annotation")
+    ET.SubElement(root, "folder").text = "folder"
+    ET.SubElement(root, "filename").text = key + ".jpg"
+    ET.SubElement(root, "path").text = "path"
+
+    source = ET.SubElement(root, "source")
+    ET.SubElement(source, "database").text = "Unknown"
+
+    size = ET.SubElement(root, "size")
+    ET.SubElement(size, "width").text = str(image_size)
+    ET.SubElement(size, "height").text = str(image_size)
+    ET.SubElement(size, "depth").text = "3"
+
+    ET.SubElement(root, "segmented").text = "0"
+
+    for point in lst:
+        object = ET.SubElement(root, "object")
+        ET.SubElement(object, "name").text = point['name']
+        ET.SubElement(object, "pose").text = "Unspecified"
+        ET.SubElement(object, "truncated").text = "0"
+        ET.SubElement(object, "difficult").text = "0"
+        bndbox = ET.SubElement(object, "bndbox")
+        ET.SubElement(bndbox, "xmin").text = str(int(point['xmin']))
+        ET.SubElement(bndbox, "ymin").text = str(int(point['ymin']))
+        ET.SubElement(bndbox, "xmax").text = str(int(point['xmax']))
+        ET.SubElement(bndbox, "ymax").text = str(int(point['ymax']))
+
+    raw_string = ET.tostring(root, "utf-8")
+    reparsed = parseString(raw_string)
+
+    with open(xml_save_path, "w") as o:
+        o.write(reparsed.toprettyxml(indent="\t"))
+
+
+def generate_labelme_format_xml(csv_files_path, patch_dict, xml_save_path):
     """
     将 csv 文件内容写入 xml
     :param csv_files_path: 读取的 csv 存放目录
@@ -46,14 +95,43 @@ def generate_labelme_format_xml(csv_files_path, xml_save_path):
                 else:
                     dict_[key].append(box)
 
-            write_to_labelme_xml(dict_, xml_save_path)
+            for key, lst in dict_.items():
+                if key in patch_dict:
+                    patch = patch_dict[key]
+                    label = patch['label']
+                    image_path = patch['path']
+
+                    save_path = os.path.join(xml_save_path, label)
+                    if not os.path.exists(save_path):
+                        os.makedirs(save_path)
+
+                    write_to_labelme_xml(lst, os.path.join(save_path, key + '.xml'))
+                    shutil.copy(image_path, save_path)
+                else:
+                    raise Exception("%s NOT FOUND IN DICT" % file)
+
 
 
 if __name__ == '__main__':
+
+    image_608_path = "/home/tsimage/Development/DATA/remark"
+    image_608_dict = generate_name_path_dict(image_608_path, ['.jpg'])
+
+
+    data_save_path = "/home/tsimage/Development/DATA/recheck_xml_and_608"
+
+    dict_ = {}
+    for key, value in image_608_dict.items():
+        parent = os.path.dirname(value)
+        label = os.path.basename(parent)
+
+        dict_[key] = {
+            "label": label,
+            "path": value
+        }
+
+
     # 待处理 csv 文件路径
-    csv_files_path = 'C:/tmp/csv'
+    csv_files_path = '/home/tsimage/Development/DATA/meta_test'
 
-    # 待生成的 labelme 格式的 xml 文件存放目录
-    xml_files_save_path = 'C:/tmp/xmls'
-
-    generate_labelme_format_xml(csv_files_path, xml_files_save_path)
+    generate_labelme_format_xml(csv_files_path, dict_, data_save_path)
