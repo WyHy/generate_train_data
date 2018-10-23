@@ -13,7 +13,7 @@ import xml.etree.ElementTree as ET
 
 sys.path.append('..')
 
-from utils import FilesScanner, write_to_labelme_xml, generate_name_path_dict
+from utils import FilesScanner, write_to_labelme_xml, generate_name_path_dict, cal_IOU
 
 
 def write_to_labelme_xml(lst, xml_save_path, image_size=608):
@@ -105,7 +105,18 @@ def generate_labelme_format_xml(csv_files_path, patch_dict, xml_save_path):
                     if not os.path.exists(save_path):
                         os.makedirs(save_path)
 
-                    write_to_labelme_xml(lst, os.path.join(save_path, key + '.xml'))
+                    # remove duplicated cells
+                    lst_ = []
+                    for item in lst:
+                        x, y, w, h = item['xmin'], item['ymin'], item['xmax'] - item['xmin'], item['ymax'] - item['ymin']
+                        for item_ in lst_:
+                            x_, y_, w_, h_ = item_['xmin'], item_['ymin'], item_['xmax'] - item_['xmin'], item_['ymax'] - item_['ymin']
+                            if cal_IOU((x, y, w, h), (x_, y_, w_, h_)) > 0.8:
+                                break
+                        else:
+                            lst_.append(item)
+
+                    write_to_labelme_xml(lst_, os.path.join(save_path, key + '.xml'))
                     shutil.copy(image_path, save_path)
                 else:
                     raise Exception("%s NOT FOUND IN DICT" % file)
@@ -132,6 +143,6 @@ if __name__ == '__main__':
 
 
     # 待处理 csv 文件路径
-    csv_files_path = '/home/tsimage/Development/DATA/meta_test'
+    csv_files_path = '/home/tsimage/Development/DATA/meta'
 
     generate_labelme_format_xml(csv_files_path, dict_, data_save_path)
