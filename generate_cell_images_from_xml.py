@@ -104,7 +104,7 @@ if __name__ == '__main__':
     tasks = []
 
     tif_images_collections_path = os.path.join(METADATA_FILE_PATH, 'TIFF_IMAGES_PATH_DICT.txt')
-    tiff_dict = generate_name_path_dict(tif_path, ['.tif', '.kfb'], tif_images_collections_path)
+    tiff_dict = generate_name_path_dict(TIFF_IMAGE_RESOURCE_PATH, ['.tif', '.kfb'], tif_images_collections_path)
     # tiff_dict = generate_name_path_dict('', ['.tif', '.kfb'])
 
     for index, file in enumerate(xmls):
