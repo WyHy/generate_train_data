@@ -204,7 +204,7 @@ if __name__ == '__main__':
     print('LOAD AUTO IMAGES INFO COLLECTIONS...')
     points_collection = {}
     for path in auto_path:
-        points_collection.update(get_cell_image(auto_path, 'AUTO', tif_images))
+        points_collection.update(get_cell_image(path, 'AUTO', tif_images))
 
     # 3. 拷贝文件，生成 xml 文件
     generate_xml_file(points_collection)
