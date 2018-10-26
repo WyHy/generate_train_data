@@ -127,7 +127,7 @@ def get_cell_image(path, ctype, parent_pathes):
     return cells_dict
 
 
-def generate_xml_file(points_collection):
+def generate_xml_file(points_collection, tif_images):
     # 统计当前数据生成进度
     count = 0
 
@@ -145,7 +145,7 @@ def generate_xml_file(points_collection):
         save_path = os.path.join(TIFF_IMAGE_RESOURCE_PATH, parent_file_name)
 
         # 当本地文件不存在时从远程服务器下载该文件
-        if not os.path.exists(save_path):
+        if parent_file_name not in tif_images:
             raise Exception("%s IS NOT FOUND IN LOCAL RESOURCE PATH" % parent_file_name)
             # pass
             # shutil.copy(parent_path, save_path)
@@ -164,7 +164,7 @@ def generate_xml_file(points_collection):
 if __name__ == '__main__':
     # 大图存储位置
     tif_path = [
-        '/run/user/1000/gvfs/smb-share:server=192.168.2.221,share=data_samba/DATA/0TIFF',
+        '/home/cnn/Development/DATA/TRAIN_DATA/TIFFS',
     ]
 
     # 自动标注细胞图像存储位置
@@ -207,4 +207,4 @@ if __name__ == '__main__':
         points_collection.update(get_cell_image(path, 'AUTO', tif_images))
 
     # 3. 拷贝文件，生成 xml 文件
-    generate_xml_file(points_collection)
+    generate_xml_file(points_collection, tif_images)
