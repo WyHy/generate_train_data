@@ -176,6 +176,7 @@ if __name__ == '__main__':
         '/run/user/1000/gvfs/smb-share:server=192.168.2.221,share=data_samba/DATA/2CHECKED/20181026',
         '/run/user/1000/gvfs/smb-share:server=192.168.2.221,share=data_samba/DATA/2CHECKED/20181025',
         '/run/user/1000/gvfs/smb-share:server=192.168.2.221,share=data_samba/DATA/2CHECKED/从2018-10-25及2018-10-26中剪切出来',
+        '/run/user/1000/gvfs/smb-share:server=192.168.2.221,share=data_samba/DATA/2CHECKED/TIFFS_MERGED_20181025',
     ]
 
     # 1. 检查大图 名称与路径对应关系 txt 文件是否存在， 生成生成大图文件名与路径 dict
@@ -208,7 +209,11 @@ if __name__ == '__main__':
     print('LOAD AUTO IMAGES INFO COLLECTIONS...')
     points_collection = {}
     for path in auto_path:
-        points_collection.update(get_cell_image(path, 'AUTO', tif_images))
+        dict_ = get_cell_image(path, 'AUTO', tif_images)
+        for key, value in dict_.items():
+            if key in points_collection:
+                print("FOUND REPEAT KEY %s" % key)
+
 
     # 3. 拷贝文件，生成 xml 文件
-    generate_xml_file(points_collection, tif_images)
+    # generate_xml_file(points_collection, tif_images)
