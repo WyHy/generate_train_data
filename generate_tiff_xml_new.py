@@ -145,7 +145,8 @@ def generate_xml_file(points_collection, tif_images):
         save_path = os.path.join(TIFF_IMAGE_RESOURCE_PATH, parent_file_name)
 
         # 当本地文件不存在时从远程服务器下载该文件
-        if parent_file_name not in tif_images:
+        key, _ = os.path.splitext(os.path.basename(parent_file_name))
+        if key not in tif_images:
             raise Exception("%s IS NOT FOUND IN LOCAL RESOURCE PATH" % parent_file_name)
             # pass
             # shutil.copy(parent_path, save_path)
