@@ -66,7 +66,7 @@ def get_cell_image(path, ctype, parent_pathes):
 
             parent = os.path.dirname(parent)
             # 细胞所属大图名称
-            parent_name = os.path.basename(parent)
+            parent_name = os.path.basename(parent).replace(' ', '-')
 
             parent = os.path.dirname(parent)
             # 大图所属类别
@@ -217,6 +217,6 @@ if __name__ == '__main__':
                 print("FOUND REPEAT KEY %s" % key)
 
     print(count)
-    
+
     # 3. 拷贝文件，生成 xml 文件
-    # generate_xml_file(points_collection, tif_images)
+    generate_xml_file(points_collection, tif_images)
