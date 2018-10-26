@@ -170,6 +170,7 @@ if __name__ == '__main__':
     # 自动标注细胞图像存储位置
     auto_path = [
         '/run/user/1000/gvfs/smb-share:server=192.168.2.221,share=data_samba/DATA/2CHECKED/20181026',
+        '/run/user/1000/gvfs/smb-share:server=192.168.2.221,share=data_samba/DATA/2CHECKED/20181025',
         '/run/user/1000/gvfs/smb-share:server=192.168.2.221,share=data_samba/DATA/2CHECKED/从2018-10-25及2018-10-26中剪切出来',
     ]
 
