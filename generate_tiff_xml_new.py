@@ -58,7 +58,7 @@ def get_cell_image(path, ctype, parent_pathes):
     for item in files:
         if item.endswith('.jpg'):
             # 细胞图文件名
-            basename = os.path.basename(item)
+            basename = os.path.basename(item).replace(' ', '-')
 
             parent = os.path.dirname(item)
             # 细胞所属类别
@@ -209,7 +209,10 @@ if __name__ == '__main__':
     print('LOAD AUTO IMAGES INFO COLLECTIONS...')
     count = 0
     points_collection = {}
-    for path in auto_path:
+
+    total = len(auto_path)
+    for index, path in enumerate(auto_path):
+        print("LOAD %s / %s ..." % (index + 1, total))
         dict_ = get_cell_image(path, 'AUTO', tif_images)
         for key, value in dict_.items():
             count += len(value)
