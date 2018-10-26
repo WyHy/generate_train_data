@@ -86,6 +86,9 @@ def generate_checked_level_xml(filename, point_lst):
     cell_count = 0
     for i, point in enumerate(point_lst):
         cell_type = point['cell_type']
+        if '_' in cell_type:
+            cell_type = cell_type.split('_')[0]
+            
         assert cell_type in TYPE_to_COLOR_DICT, "THE CELL_TYPE [%s] IS NOT EXIST!"
 
         annotation = ET.SubElement(annotations, "Annotation")
