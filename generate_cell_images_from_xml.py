@@ -103,9 +103,11 @@ if __name__ == '__main__':
     executor = ProcessPoolExecutor(max_workers=20)
     tasks = []
 
+    tif_path = '/home/cnn/Development/DATA/TRAIN_DATA/TIFFS'
     tif_images_collections_path = os.path.join(METADATA_FILE_PATH, 'TIFF_IMAGES_PATH_DICT.txt')
-    tiff_dict = generate_name_path_dict(TIFF_IMAGE_RESOURCE_PATH, ['.tif', '.kfb'], tif_images_collections_path)
+    tiff_dict = generate_name_path_dict(tif_path, ['.tif', '.kfb'], tif_images_collections_path)
     # tiff_dict = generate_name_path_dict('', ['.tif', '.kfb'])
+
 
     for index, file in enumerate(xmls):
         tasks.append(executor.submit(generate_image_from_xml, file, CELL_IMAGES_SAVE_PATH, tiff_dict))

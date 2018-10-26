@@ -85,6 +85,9 @@ def get_cell_image(path, ctype, parent_pathes):
 
             _, x, y, w, h, _ = point
 
+            if '_' in clas_type:
+                clas_type = clas_type.split('_')[0]
+
             # 修正 AGC 细胞类别
             if clas_type in AGC_CLASSES:
                 clas_type = 'AGC'
