@@ -150,7 +150,7 @@ def generate_xml_file(points_collection, tif_images):
         # 当本地文件不存在时从远程服务器下载该文件
         key, _ = os.path.splitext(os.path.basename(parent_file_name))
         key = key.replace(' ', '-')
-        
+
         if key not in tif_images:
             raise Exception("%s IS NOT FOUND IN LOCAL RESOURCE PATH" % parent_file_name)
             # pass
@@ -179,6 +179,7 @@ if __name__ == '__main__':
         '/run/user/1000/gvfs/smb-share:server=192.168.2.221,share=data_samba/DATA/2CHECKED/20181025',
         '/run/user/1000/gvfs/smb-share:server=192.168.2.221,share=data_samba/DATA/2CHECKED/从2018-10-25及2018-10-26中剪切出来',
         '/run/user/1000/gvfs/smb-share:server=192.168.2.221,share=data_samba/DATA/2CHECKED/TIFFS_MERGED_20181025',
+        '/run/user/1000/gvfs/smb-share:server=192.168.2.221,share=data_samba/DATA/2CHECKED/TIFFS_MERGED_20181026',
     ]
 
     # 1. 检查大图 名称与路径对应关系 txt 文件是否存在， 生成生成大图文件名与路径 dict
