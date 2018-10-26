@@ -207,13 +207,16 @@ if __name__ == '__main__':
     # 2. 生成大图与细胞位置信息文件路径字典
     # 自动标注细胞信息
     print('LOAD AUTO IMAGES INFO COLLECTIONS...')
+    count = 0
     points_collection = {}
     for path in auto_path:
         dict_ = get_cell_image(path, 'AUTO', tif_images)
         for key, value in dict_.items():
+            count += len(value)
             if key in points_collection:
                 print("FOUND REPEAT KEY %s" % key)
 
-
+    print(count)
+    
     # 3. 拷贝文件，生成 xml 文件
     # generate_xml_file(points_collection, tif_images)
