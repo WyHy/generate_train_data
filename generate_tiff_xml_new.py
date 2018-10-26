@@ -41,16 +41,16 @@ def get_cell_image(path, ctype, parent_pathes):
     # 如果存在，则直接读取
     # 如果没有，通过 FileScanner 工具类获取并写入本地文件
 
-    image_path_info_dict_path = ctype + '_IMAGES_PATH_DICT.txt'
-    check_name = os.path.join(METADATA_FILE_PATH, image_path_info_dict_path)
+    # image_path_info_dict_path = ctype + '_IMAGES_PATH_DICT.txt'
+    # check_name = os.path.join(METADATA_FILE_PATH, image_path_info_dict_path)
 
-    if os.path.exists(check_name):
-        with open(os.path.join(METADATA_FILE_PATH, image_path_info_dict_path)) as f:
-            files = [item.replace('\n', '') for item in f.readlines()]
-    else:
-        files = FilesScanner(path, ['.jpg']).get_files()
-        with open(os.path.join(METADATA_FILE_PATH, image_path_info_dict_path), 'w') as o:
-            o.writelines([item + '\n' for item in files])
+    # if os.path.exists(check_name):
+    #     with open(os.path.join(METADATA_FILE_PATH, image_path_info_dict_path)) as f:
+    #         files = [item.replace('\n', '') for item in f.readlines()]
+    # else:
+    files = FilesScanner(path, ['.jpg']).get_files()
+        # with open(os.path.join(METADATA_FILE_PATH, image_path_info_dict_path), 'w') as o:
+        #     o.writelines([item + '\n' for item in files])
 
     # 根据细胞图像文件名生成细胞坐标信息
     cells_dict = {}
