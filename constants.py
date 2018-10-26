@@ -24,11 +24,11 @@ TYPE_to_COLOR_DICT = dict(zip(PATHOLOGY_TYPE_CLASSES, PATHOLOGY_TYPE_COLORS))
 COLOR_to_TYPE_DICT = dict(zip(PATHOLOGY_TYPE_COLORS, PATHOLOGY_TYPE_CLASSES))
 
 # 数据存储根目录
-DATA_RESOURCE_ROOT_PATH = os.path.join(os.environ['HOME'] + "/Development/DATA/TRAIN_DATA")
+DATA_RESOURCE_ROOT_PATH = os.path.join(os.environ['HOME'] + "/Development/DATA/TRAIN_DATA/20181026")
 # DATA_RESOURCE_ROOT_PATH = os.path.join("C:/" + "/Development/DATA/TRAIN_DATA")
 
 # 病理图像本地资源库路径
-TIFF_IMAGE_RESOURCE_PATH = os.path.join(DATA_RESOURCE_ROOT_PATH, "TIFFS")
+TIFF_IMAGE_RESOURCE_PATH = os.path.join(os.environ['HOME'], "/Development/DATA/TRAIN_DATA/TIFFS")
 
 # 中间数据文件生成目录
 METADATA_FILE_PATH = os.path.join(DATA_RESOURCE_ROOT_PATH, "META")
