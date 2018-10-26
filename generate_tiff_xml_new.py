@@ -218,6 +218,8 @@ if __name__ == '__main__':
             count += len(value)
             if key in points_collection:
                 print("FOUND REPEAT KEY %s" % key)
+            else:
+                points_collection[key] = value
 
     print(count)
 
