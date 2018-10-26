@@ -149,6 +149,8 @@ def generate_xml_file(points_collection, tif_images):
 
         # 当本地文件不存在时从远程服务器下载该文件
         key, _ = os.path.splitext(os.path.basename(parent_file_name))
+        key = key.replace(' ', '-')
+        
         if key not in tif_images:
             raise Exception("%s IS NOT FOUND IN LOCAL RESOURCE PATH" % parent_file_name)
             # pass
