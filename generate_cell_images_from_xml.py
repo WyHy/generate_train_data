@@ -43,7 +43,6 @@ def generate_image_from_xml(xml_path, cell_save_path, tiff_dict):
         print(xml_name, 'NOT FOUND!')
         exit()
 
-
     tiff_file_path = tiff_dict[xml_name]
 
     annotations = collection.getElementsByTagName("Annotation")
