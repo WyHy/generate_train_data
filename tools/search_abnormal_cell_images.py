@@ -53,5 +53,26 @@ def get_abnormal_tiff_list():
         o.write("\n".join(lst))
 
 
+def get_tiff_location():
+    pathes = [
+        '/home/cnn/Development/DATA/CELL_CLASSIFIED_JOB_20181022/CELLS/TIFFS',
+        '/home/cnn/Development/DATA/CELL_CLASSIFIED_JOB_20181024/CELLS/TIFFS_READY_TO_CHECK',
+        '/home/cnn/Development/DATA/CELL_CLASSIFIED_JOB_20181025_1/CELLS/20181025',
+        '/home/cnn/Development/DATA/CELL_CLASSIFIED_JOB_20181026/CELLS/20181025_1',
+    ]
+
+    dict_ = {}
+    for path in pathes:
+        tiffs = os.listdir(path)
+        for tiff in tiffs:
+            tiff = tiff.replace(" ", "-")
+            if tiff in dict_:
+                raise Exception(tiff, dict_[tiff])
+            else:
+                dict_[tiff] = os.path.join(path, tiff)
+
+
 if __name__ == '__main__':
-    get_abnormal_tiff_list()
+    # get_abnormal_tiff_list()
+
+    get_tiff_location()
