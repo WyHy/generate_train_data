@@ -116,6 +116,7 @@ if __name__ == '__main__':
                 print("WA %s is NEW " % basename)
                 save_path = os.path.join(dst, 'NO_CHECK', big_name, cell_type)
             else:
+                print("EEEE %s is EXIST!" % basename)
                 save_path = os.path.join(dst, 'CHECKED', cell_type)
 
             if not os.path.exists(save_path):
