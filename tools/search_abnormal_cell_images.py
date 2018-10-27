@@ -18,7 +18,15 @@ images = FilesScanner(src_path).get_files()
 
 for path in images:
     basename = os.path.basename(path)
-    _, big_name, x, y, w, h, _ = re.findall(pattern, basename)
+    items = re.findall(pattern, basename
+    
+    if items:
+        print(items)
+    else:
+        print(basename)
+
+    continue
+    big_name, x, y, w, h, _ = items[0]
 
     if int(w) > 500 or int(h) > 500:
         shutil.copy(path, dst_path)
