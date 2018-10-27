@@ -71,6 +71,17 @@ def get_tiff_location():
             else:
                 dict_[tiff] = os.path.join(path, tiff)
 
+    with open("/home/cnn/Development/code/generate_train_data/tools/4x_tiff_lst.txt") as f:
+        lines = f.readlines()
+        names = [line.replace("\n", "") for line in lines]
+
+    count = 0
+    for name in names:
+        if name in dict_:
+            count += 1
+
+    print(count)
+
 
 if __name__ == '__main__':
     # get_abnormal_tiff_list()
