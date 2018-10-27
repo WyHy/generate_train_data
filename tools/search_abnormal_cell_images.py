@@ -103,7 +103,7 @@ if __name__ == '__main__':
 
     pattern = re.compile(r'1-p0.\d{4}_(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_?(\dx)?.jpg')
 
-    for item in lst[:1]:
+    for item in lst:
         images = FilesScanner(item, ['.jpg']).get_files()
         for name in images:
             basename = os.path.basename(name)
