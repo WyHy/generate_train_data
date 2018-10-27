@@ -105,10 +105,10 @@ if __name__ == '__main__':
 
     for item in lst[:1]:
         images = FilesScanner(item, ['.jpg']).get_files()
-        for name in images[:30]:
+        for name in images:
             basename = os.path.basename(name)
             big_name, x, y, w, h, _ = re.findall(pattern, basename)[0]
-            basename = "%s_%s_%s_%s_%s" % (big_name, x, y, w, h)
+            basename = "%s_x%s_y%s_w%s_h%s" % (big_name, x, y, w, h)
 
             cell_type = os.path.basename(os.path.dirname(name))
             print(basename, basename not in already_exist_images)
