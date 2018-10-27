@@ -111,15 +111,13 @@ if __name__ == '__main__':
             basename = "%s_x%s_y%s_w%s_h%s" % (big_name, x, y, w, h)
 
             cell_type = os.path.basename(os.path.dirname(name))
-            print(basename, basename not in already_exist_images)
-            continue
 
-            # if basename not in already_exist_images:
-            #     save_path = os.path.join(dst, 'NO_CHECK', big_name, cell_type)
-            # else:
-            #     save_path = os.path.join(dst, 'CHECKED', cell_type)
-            #
-            # if not os.path.exists(save_path):
-            #     os.makedirs(save_path)
-            #
-            # shutil.copy(name, save_path)
+            if basename not in already_exist_images:
+                save_path = os.path.join(dst, 'NO_CHECK', big_name, cell_type)
+            else:
+                save_path = os.path.join(dst, 'CHECKED', cell_type)
+
+            if not os.path.exists(save_path):
+                os.makedirs(save_path)
+
+            shutil.copy(name, save_path)
