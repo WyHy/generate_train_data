@@ -97,7 +97,7 @@ if __name__ == '__main__':
 
     with open("names_lst.txt") as f:
         lines = f.readlines()
-        already_exist_images = ["_".join(line.replace("\n", '').split("_")[:-2]) for line in lines]
+        already_exist_images = ["_".join(line.replace("\n", '').split("_")[:-1]) for line in lines]
 
     print(already_exist_images[:100])
 
@@ -113,6 +113,7 @@ if __name__ == '__main__':
             cell_type = os.path.basename(os.path.dirname(name))
 
             if basename not in already_exist_images:
+                print("WA %s is NEW " % basename)
                 save_path = os.path.join(dst, 'NO_CHECK', big_name, cell_type)
             else:
                 save_path = os.path.join(dst, 'CHECKED', cell_type)
