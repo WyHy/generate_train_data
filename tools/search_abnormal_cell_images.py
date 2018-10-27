@@ -97,20 +97,25 @@ if __name__ == '__main__':
 
     with open("names_lst.txt") as f:
         lines = f.readlines()
-        already_exist_images = [line.replace("\n", '') for line in lines]
+        already_exist_images = ["_".join(line.replace("\n", '').split("_")[:-2]) for line in lines]
 
     print(already_exist_images[:100])
+
+    pattern = re.compile(r'1-p0.\d{4}_(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_?(\dx)?.jpg')
 
     for item in lst[:1]:
         images = FilesScanner(item, ['.jpg']).get_files()
         for name in images[:30]:
             basename = os.path.basename(name)
+            big_name, x, y, w, h, _ = re.findall(pattern, basename)[0]
+            basename = "%s_%s_%s_%s_%s" % (big_name, x, y, w, h)
+
             cell_type = os.path.basename(os.path.dirname(name))
             print(basename, basename not in already_exist_images)
             continue
 
             # if basename not in already_exist_images:
-            #     save_path = os.path.join(dst, 'NO_CHECK', cell_type)
+            #     save_path = os.path.join(dst, 'NO_CHECK', big_name, cell_type)
             # else:
             #     save_path = os.path.join(dst, 'CHECKED', cell_type)
             #
