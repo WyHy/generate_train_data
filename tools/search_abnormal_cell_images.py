@@ -14,19 +14,19 @@ pattern = re.compile(r'1-p0.\d{4}_(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_?(\dx)?.jpg'
 src_path = "/home/cnn/Development/DATA/CELL_CLASSIFIED_JOB_20181022/CELLS/TIFFS_CHECKED"
 dst_path = "/home/cnn/Development/DATA/CELL_CLASSIFIED_JOB_20181022/CELLS/ABNORMAL_IMAGE_COLLECTIONS"
 
-images = FilesScanner(src_path).get_files()
+images = FilesScanner(src_path, ['.jpg']).get_files()
 
 for path in images:
     basename = os.path.basename(path)
     items = re.findall(pattern, basename)
 
     if items:
-        print(items)
+        # print(items)
+        pass
     else:
         print(basename)
 
-    continue
     big_name, x, y, w, h, _ = items[0]
 
     if int(w) > 500 or int(h) > 500:
-        shutil.copy(path, dst_path)
+        shutil.copyfile(path, os.path.join(dst_path, "%s_%s_%s_%s_%s.jpg" % (big_name, x, y, w, h)))
