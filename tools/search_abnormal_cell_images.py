@@ -76,14 +76,41 @@ def get_tiff_location():
         names = [line.replace("\n", "") for line in lines]
 
     count = 0
+
+    lst = []
     for name in names:
         if name in dict_:
+            lst.append(dict_[name])
             count += 1
 
-    print(count)
+    print("SHOW AGAIN NUM: %s" % count)
+
+    return lst
 
 
 if __name__ == '__main__':
     # get_abnormal_tiff_list()
 
-    get_tiff_location()
+    lst = get_tiff_location()
+
+    dst = "/home/cnn/Development/DATA/RECHECK_DATA_IN_20181026"
+
+    with open("names_lst.txt") as f:
+        lines = f.readlines()
+        already_exist_images = [line.replace("\n", '') for line in lines]
+
+    for item in lst:
+        images = FilesScanner(item, ['.jpg']).get_files()
+        for name in images:
+            basename = os.path.basename(name)
+            cell_type = os.path.basename(os.path.dirname(name))
+
+            if basename in already_exist_images:
+                save_path = os.path.join(dst, 'NO_CHECK', cell_type)
+            else:
+                save_path = os.path.join(dst, 'CHECKED', cell_type)
+
+            if not os.path.exists(save_path):
+                os.makedirs(save_path)
+
+            shutil.copy(name, save_path)
