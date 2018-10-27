@@ -18,8 +18,8 @@ images = FilesScanner(src_path).get_files()
 
 for path in images:
     basename = os.path.basename(path)
-    items = re.findall(pattern, basename
-    
+    items = re.findall(pattern, basename)
+
     if items:
         print(items)
     else:
