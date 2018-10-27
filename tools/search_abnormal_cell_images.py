@@ -99,18 +99,22 @@ if __name__ == '__main__':
         lines = f.readlines()
         already_exist_images = [line.replace("\n", '') for line in lines]
 
-    for item in lst:
+    print(already_exist_images[:100])
+
+    for item in lst[:1]:
         images = FilesScanner(item, ['.jpg']).get_files()
-        for name in images:
+        for name in images[:30]:
             basename = os.path.basename(name)
             cell_type = os.path.basename(os.path.dirname(name))
+            print(basename, basename not in already_exist_images)
+            continue
 
-            if basename in already_exist_images:
-                save_path = os.path.join(dst, 'NO_CHECK', cell_type)
-            else:
-                save_path = os.path.join(dst, 'CHECKED', cell_type)
-
-            if not os.path.exists(save_path):
-                os.makedirs(save_path)
-
-            shutil.copy(name, save_path)
+            # if basename not in already_exist_images:
+            #     save_path = os.path.join(dst, 'NO_CHECK', cell_type)
+            # else:
+            #     save_path = os.path.join(dst, 'CHECKED', cell_type)
+            #
+            # if not os.path.exists(save_path):
+            #     os.makedirs(save_path)
+            #
+            # shutil.copy(name, save_path)
