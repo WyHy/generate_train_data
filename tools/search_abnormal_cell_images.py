@@ -1,6 +1,9 @@
 import os
 import re
 import shutil
+import sys
+
+sys.path.append("..")
 
 from utils import FilesScanner
 
