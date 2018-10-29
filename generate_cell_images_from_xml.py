@@ -13,6 +13,8 @@ import xml
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 import openslide
+import cv2
+import numpy as np
 
 from constants import CELL_IMAGES_SAVE_PATH, CHECKED_CELL_XML_SAVE_PATH, TIFF_IMAGE_RESOURCE_PATH, TIFF_OPEN_FAIL_RECORDS, \
     DATA_RESOURCE_ROOT_PATH, SELECTED_CELL_XML_SAVE_PATH, METADATA_FILE_PATH
@@ -86,7 +88,9 @@ def generate_image_from_xml(xml_path, cell_save_path, tiff_dict):
             os.makedirs(save_path, exist_ok=True)
 
         image_name = "%s_x%s_y%s_w%s_h%s_s%s.jpg" % (xml_name, x, y, w, h, index)
-        slide.read_region((x_, y_), 0, (w_, h_)).convert("RGB").save(os.path.join(save_path, image_name))
+        patch = slide.read_region((x_, y_), 0, (w_, h_))
+        patch = cv2.cvtColor(np.asarray(patch), cv2.COLOR_RGBA2BGR)
+        cv2.imwrite(os.path.join(save_path, image_name), patch, [int(cv2.IMWRITE_JPEG_QUALITY), 95])
 
     return None
 
