@@ -149,11 +149,19 @@ def generate_selected_level_xml(filename, point_lst):
     cell_count = 0
     for i, point in enumerate(point_lst):
         cell_type = point['cell_type']
-        assert cell_type in TYPE_to_COLOR_DICT, "THE CELL_TYPE [%s] IS NOT EXIST!"
+        # assert cell_type in TYPE_to_COLOR_DICT, "THE CELL_TYPE [%s] IS NOT EXIST!" % cell_type
+        cell_type_ = cell_type
+
+        if '_' in cell_type_:
+            cell_type_ = cell_type_.split("_")[0]
+
+        if "2+" in cell_type_:
+            exit()
+
 
         annotation = ET.SubElement(annotations, "Annotation")
         annotation.attrib = {
-            "Color": TYPE_to_COLOR_DICT[cell_type],
+            "Color": TYPE_to_COLOR_DICT[cell_type_] if cell_type != cell_type_ else TYPE_to_COLOR_DICT[cell_type],
             "Name": "Annotation %s" % i,
             "PartOfGroup": "None",
             "Type": "Polygon"

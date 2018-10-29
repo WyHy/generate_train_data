@@ -85,7 +85,7 @@ def generate_image_from_xml(xml_path, cell_save_path, tiff_dict):
         if not os.path.exists(save_path):
             os.makedirs(save_path, exist_ok=True)
 
-        image_name = "%s_x%s_y%s_w%s_h%s_s%s.jpg" % (tiff_file_name, x, y, w, h, index)
+        image_name = "%s_x%s_y%s_w%s_h%s_s%s.jpg" % (xml_name, x, y, w, h, index)
         slide.read_region((x_, y_), 0, (w_, h_)).convert("RGB").save(os.path.join(save_path, image_name))
 
     return None
@@ -94,12 +94,12 @@ def generate_image_from_xml(xml_path, cell_save_path, tiff_dict):
 if __name__ == '__main__':
     # xmls_path = TRAIN_DATA_SAVE_PATH
     # 获取 xml 文件路径列表
-    xmls = FilesScanner(CHECKED_CELL_XML_SAVE_PATH, ['.xml']).get_files()
-    # xmls = FilesScanner(SELECTED_CELL_XML_SAVE_PATH, ['.xml']).get_files()
+    # xmls = FilesScanner(CHECKED_CELL_XML_SAVE_PATH, ['.xml']).get_files()
+    xmls = FilesScanner(SELECTED_CELL_XML_SAVE_PATH, ['.xml']).get_files()
 
     size = len(xmls)
 
-    executor = ProcessPoolExecutor(max_workers=15)
+    executor = ProcessPoolExecutor(max_workers=20)
     tasks = []
 
     tif_path = '/home/cnn/Development/DATA/TRAIN_DATA/TIFFS'
