@@ -15,10 +15,11 @@
 
 import json
 import os
+import re
 from copy import deepcopy
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
-from constants import METADATA_FILE_PATH, AGC_CLASSES, CHECKED_CELL_XML_SAVE_PATH, ACCEPTED_OVERLAPPED_RATIO, TIFF_IMAGE_RESOURCE_PATH
+from constants import PATHOLOGY_TYPE_CLASSES, METADATA_FILE_PATH, AGC_CLASSES, CHECKED_CELL_XML_SAVE_PATH, ACCEPTED_OVERLAPPED_RATIO, TIFF_IMAGE_RESOURCE_PATH
 from utils import FilesScanner, generate_checked_level_xml, cal_IOU, get_location_from_filename, generate_name_path_dict
 
 if not os.path.exists(METADATA_FILE_PATH):
@@ -66,7 +67,15 @@ def get_cell_image(path, ctype, parent_pathes):
 
             parent = os.path.dirname(parent)
             # 细胞所属大图名称
-            parent_name = os.path.basename(parent).replace(' ', '-')
+            pattern = re.compile(r'.*?_(\d+\-\d+\-\d+[\-_]\d+_\d+_\d+)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_?(\dx)?.jpg')
+            items = re.findall(pattern, basename)
+            if items:
+                parent_name, x, y, w, h, _ = items[0]
+            else:
+                raise Exception(items)
+                exit()
+
+            # parent_name = os.path.basename(parent).replace(' ', '-')
 
             parent = os.path.dirname(parent)
             # 大图所属类别
@@ -76,7 +85,7 @@ def get_cell_image(path, ctype, parent_pathes):
             try:
                 parent_path = parent_pathes[parent_name]
             except Exception as e:
-                print("CANNOT FIND RELATIVE TIFF PATH INFO, %s" % str(e))
+                print("CANNOT FIND RELATIVE TIFF PATH INFO, %s\n%s" % (str(e), item))
                 exit()
 
             # 解析坐标信息
@@ -88,16 +97,28 @@ def get_cell_image(path, ctype, parent_pathes):
             if '_' in clas_type:
                 clas_type = clas_type.split('_')[0]
 
+            if '-' in clas_type:
+                clas_type = clas_type.split('-')[0]
+
             # 修正 AGC 细胞类别
             if clas_type in AGC_CLASSES:
                 clas_type = 'AGC'
+
+            if clas_type not in PATHOLOGY_TYPE_CLASSES:
+                raise Exception(item + " CELL_TYPE NOT FOUND")
 
             # 解析与修正大图分类
             if '_' in parent_type:
                 parent_type = parent_type.split('_')[-1]
 
+            if '-' in parent_type:
+                parent_type = parent_type.split('-')[-1]
+
             if parent_type in AGC_CLASSES:
                 parent_type = 'AGC'
+
+            # if parent_type not in PATHOLOGY_TYPE_CLASSES:
+                # raise Exception(item + " PARENT_TYPE NOT FOUND")
 
             # 细胞位置及类别信息
             info = {
@@ -175,11 +196,7 @@ if __name__ == '__main__':
 
     # 自动标注细胞图像存储位置
     auto_path = [
-        '/run/user/1000/gvfs/smb-share:server=192.168.2.221,share=data_samba/DATA/2CHECKED/20181026',
-        '/run/user/1000/gvfs/smb-share:server=192.168.2.221,share=data_samba/DATA/2CHECKED/20181025',
-        '/run/user/1000/gvfs/smb-share:server=192.168.2.221,share=data_samba/DATA/2CHECKED/从2018-10-25及2018-10-26中剪切出来',
-        '/run/user/1000/gvfs/smb-share:server=192.168.2.221,share=data_samba/DATA/2CHECKED/TIFFS_MERGED_20181025',
-        '/run/user/1000/gvfs/smb-share:server=192.168.2.221,share=data_samba/DATA/2CHECKED/TIFFS_MERGED_20181026',
+        '/home/cnn/Development/DATA/SECOND_TRAIN_DATA/2018-10-11_for_zhuCheck',
     ]
 
     # 1. 检查大图 名称与路径对应关系 txt 文件是否存在， 生成生成大图文件名与路径 dict

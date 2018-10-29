@@ -99,7 +99,7 @@ if __name__ == '__main__':
 
     size = len(xmls)
 
-    executor = ProcessPoolExecutor(max_workers=20)
+    executor = ProcessPoolExecutor(max_workers=15)
     tasks = []
 
     tif_path = '/home/cnn/Development/DATA/TRAIN_DATA/TIFFS'
