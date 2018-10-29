@@ -7,8 +7,8 @@ import os
 import re
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
+from constants import SELECTED_CELL_XML_SAVE_PATH, MAX_CPU_WORKERS
 from utils import FilesScanner, generate_selected_level_xml
-from constants import SELECTED_CELL_XML_SAVE_PATH, CELL_IMAGES_SAVE_PATH, MAX_CPU_WORKERS
 
 if not os.path.exists(SELECTED_CELL_XML_SAVE_PATH):
     os.makedirs(SELECTED_CELL_XML_SAVE_PATH, exist_ok=True)
@@ -33,6 +33,21 @@ if __name__ == '__main__':
         if not point:
             print(path)
         tiff_name, x, y, w, h, _ = point[0]
+
+        # 处理 2+ 图像，图像切图扩大两倍
+        if '2+' in cell_type:
+            x = int(x - w / 2)
+            y = int(y - h / 2)
+            w = 2 * w
+            h = 2 * h
+
+        # 处理 2- 图像，图像切图缩小两倍
+        if '2-' in cell_type:
+            x = int(x + w / 2)
+            y = int(y + h / 2)
+            w = int(w / 2)
+            h = int(h / 2)
+
         if tiff_name in tiff_cell_dict:
             tiff_cell_dict[tiff_name].append({"x": x, "y": y, "w": w, "h": h, "cell_type": cell_type})
         else:
@@ -47,7 +62,7 @@ if __name__ == '__main__':
         # 生成大图对应 筛选后的细胞标注点 xml 文件
 
         xml_file_name = os.path.join(SELECTED_CELL_XML_SAVE_PATH, key + '.xml')
-        
+
         if len(value) > 0:
             tasks.append(executor.submit(generate_selected_level_xml, xml_file_name, value))
         else:
@@ -60,5 +75,3 @@ if __name__ == '__main__':
 
     print("TIFF COUNT: %s" % dict_size)
     print("CELL COUNT: %s" % len(cell_images_lst))
-
-
