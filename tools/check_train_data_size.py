@@ -2,6 +2,9 @@ import os
 import shutil
 
 from PIL import Image
+import sys
+
+sys.path.append('..')
 
 from utils import FilesScanner
 
@@ -9,7 +12,7 @@ OUT_PUT_PATH = "/home/data-server/Documents/wangy/DATA/size_check"
 
 
 def find_size_over_608(path):
-    images = FilesScanner(path).get_files()
+    images = FilesScanner(path, ['.jpg']).get_files()
 
     total = len(images)
     for index, image in enumerate(images):
@@ -17,8 +20,8 @@ def find_size_over_608(path):
         ctype = os.path.basename(os.path.dirname(image))
 
         print("%s / %s %s" % (index + 1, total, basename))
-        image = Image.open(image)
-        w, h = image.size
+        img = Image.open(image)
+        w, h = img.size
 
         if w > 608 or h > 608:
             save_path = os.path.join(OUT_PUT_PATH, ctype)
