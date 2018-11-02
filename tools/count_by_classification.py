@@ -28,7 +28,7 @@ def count(path):
 
 if __name__ == '__main__':
     path = "/home/cnn/Development/DATA/CELL_CLASSIFIED_JOB_20181102_ZHENGZHOU/CELLS"
-    output_path = "/home/cnn/Development/DATA/CELL_CLASSIFIED_JOB_20181102_ZHENGZHOU/cells_count_by_pathology_20181102.txt"
+    output_path = "/home/cnn/Development/DATA/CELL_CLASSIFIED_JOB_20181102_ZHENGZHOU/cells_count_by_pathology_20181102.csv"
 
     lst = count(path)
     with open(output_path, 'w', newline='') as o:
