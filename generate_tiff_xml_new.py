@@ -67,7 +67,7 @@ def get_cell_image(path, ctype, parent_pathes):
 
             parent = os.path.dirname(parent)
             # 细胞所属大图名称
-            pattern = re.compile(r'.*?_(\d+\-\d+\-\d+[\-_]\d+_\d+_\d+)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_?(\dx)?.jpg')
+            pattern = re.compile(r'1\-p0\.\d{4}_(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_?(\dx)?.jpg')
             items = re.findall(pattern, basename)
             if items:
                 parent_name, x, y, w, h, _ = items[0]
