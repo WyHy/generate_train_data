@@ -33,6 +33,7 @@ if __name__ == '__main__':
     lst = count(path)
     with open(output_path, 'w', newline='') as o:
         writer = csv.DictWriter(o, CLASSES)
+        writer.writeheader()
         writer.writerows(lst)
 
 
