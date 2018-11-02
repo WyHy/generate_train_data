@@ -13,7 +13,7 @@ def count(path):
         basename, _ = os.path.splitext(os.path.basename(file))
         print("%s / %s %s" % (index + 1, total, basename))
 
-        obj = {"NAME": basename}
+        obj = {"IDENTIFIER": basename}
 
         parent = os.path.join(path, file)
         classifications = os.listdir(parent)
