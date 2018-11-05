@@ -93,6 +93,11 @@ def get_cell_image(path, ctype, parent_pathes):
             assert point, "THIS JPG NAME IS NOT ACCEPTED => %s" % basename
 
             _, x, y, w, h, _ = point
+            if '2+' in clas_type:
+                x = x - w / 2
+                y = y - h / 2
+                w = 2 * w
+                h = 2 * h
 
             if '_' in clas_type:
                 clas_type = clas_type.split('_')[0]
@@ -119,6 +124,7 @@ def get_cell_image(path, ctype, parent_pathes):
 
             # if parent_type not in PATHOLOGY_TYPE_CLASSES:
                 # raise Exception(item + " PARENT_TYPE NOT FOUND")
+
 
             # 细胞位置及类别信息
             info = {
@@ -196,7 +202,7 @@ if __name__ == '__main__':
 
     # 自动标注细胞图像存储位置
     auto_path = [
-        '/home/cnn/Development/DATA/THIRD_TRAIN_DATA',
+        '/home/cnn/Development/DATA/THIRD_TRAIN_DATA_1',
     ]
 
     # 1. 检查大图 名称与路径对应关系 txt 文件是否存在， 生成生成大图文件名与路径 dict
