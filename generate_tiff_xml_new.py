@@ -93,6 +93,8 @@ def get_cell_image(path, ctype, parent_pathes):
             assert point, "THIS JPG NAME IS NOT ACCEPTED => %s" % basename
 
             _, x, y, w, h, _ = point
+            x, y, w, h = int(x), int(y), int(w), int(h)
+
             if '2+' in clas_type:
                 x = x - w / 2
                 y = y - h / 2
