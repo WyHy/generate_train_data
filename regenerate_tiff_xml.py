@@ -17,7 +17,7 @@ if __name__ == '__main__':
     # 读取指定位置的算法人员筛选后的细胞文件路径
     # cell_images_path = CELL_IMAGES_SAVE_PATH
 
-    cell_images_path = '/home/cnn/Development/DATA/TRAIN_DATA/BATCH_4_TRAIN_DATA/CELLS/'
+    cell_images_path = '/home/cnn/Development/DATA/BATCH_4_TRAIN_DATA/CELLS/'
     print("SCANNING PATH %s..." % cell_images_path)
     cell_images_lst = FilesScanner(cell_images_path, ['.jpg']).get_files()
     print("CELLS COUNT: %s" % len(cell_images_lst))
@@ -33,8 +33,11 @@ if __name__ == '__main__':
         point = re.findall(pattern, jpg)
         if not point:
             print(path)
-
-        tiff_name, x, y, w, h, _ = point[0]
+        try:
+            tiff_name, x, y, w, h, _ = point[0]
+        except:
+            print("RE ERROR")
+            print(jpg)
         x, y, w, h = int(x), int(y), int(w), int(h)
 
         # 处理 1.5+ 图像，图像切图扩大0.5倍
