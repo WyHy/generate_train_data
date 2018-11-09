@@ -12,12 +12,12 @@ import os
 import xml
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
-import openslide
 import cv2
 import numpy as np
+import openslide
 
-from constants import CELL_IMAGES_SAVE_PATH, CHECKED_CELL_XML_SAVE_PATH, TIFF_IMAGE_RESOURCE_PATH, TIFF_OPEN_FAIL_RECORDS, \
-    DATA_RESOURCE_ROOT_PATH, SELECTED_CELL_XML_SAVE_PATH, METADATA_FILE_PATH
+from constants import CELL_IMAGES_SAVE_PATH, CHECKED_CELL_XML_SAVE_PATH, TIFF_OPEN_FAIL_RECORDS, \
+    DATA_RESOURCE_ROOT_PATH, METADATA_FILE_PATH
 from tslide.tslide import TSlide
 from utils import FilesScanner, generate_name_path_dict
 
@@ -110,7 +110,6 @@ if __name__ == '__main__':
     tif_images_collections_path = os.path.join(METADATA_FILE_PATH, 'TIFF_IMAGES_PATH_DICT.txt')
     tiff_dict = generate_name_path_dict(tif_path, ['.tif', '.kfb'], tif_images_collections_path)
     # tiff_dict = generate_name_path_dict('', ['.tif', '.kfb'])
-
 
     for index, file in enumerate(xmls):
         tasks.append(executor.submit(generate_image_from_xml, file, CELL_IMAGES_SAVE_PATH, tiff_dict))

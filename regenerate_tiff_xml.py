@@ -23,7 +23,7 @@ if __name__ == '__main__':
     print("CELLS COUNT: %s" % len(cell_images_lst))
 
     # 2018-03-22-11_26_58_x15789_y31806_w63_h61_s385.jpg
-    pattern = re.compile(r'(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_s(\d+).jpg')
+    pattern = re.compile(r'(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)(_s\d+)?.jpg')
 
     print("COLLECT POINT INFO FROM JPG FILES...")
     tiff_cell_dict = {}
