@@ -17,7 +17,7 @@ import numpy as np
 import openslide
 
 from constants import CELL_IMAGES_SAVE_PATH, CHECKED_CELL_XML_SAVE_PATH, TIFF_OPEN_FAIL_RECORDS, \
-    DATA_RESOURCE_ROOT_PATH, METADATA_FILE_PATH
+    DATA_RESOURCE_ROOT_PATH, METADATA_FILE_PATH, SELECTED_CELL_XML_SAVE_PATH
 from tslide.tslide import TSlide
 from utils import FilesScanner, generate_name_path_dict
 
@@ -98,8 +98,8 @@ def generate_image_from_xml(xml_path, cell_save_path, tiff_dict):
 if __name__ == '__main__':
     # xmls_path = TRAIN_DATA_SAVE_PATH
     # 获取 xml 文件路径列表
-    xmls = FilesScanner(CHECKED_CELL_XML_SAVE_PATH, ['.xml']).get_files()
-    # xmls = FilesScanner(SELECTED_CELL_XML_SAVE_PATH, ['.xml']).get_files()
+    # xmls = FilesScanner(CHECKED_CELL_XML_SAVE_PATH, ['.xml']).get_files()
+    xmls = FilesScanner(SELECTED_CELL_XML_SAVE_PATH, ['.xml']).get_files()
 
     size = len(xmls)
 
