@@ -37,12 +37,29 @@ if __name__ == '__main__':
         tiff_name, x, y, w, h, _ = point[0]
         x, y, w, h = int(x), int(y), int(w), int(h)
 
+        # 处理 1.5+ 图像，图像切图扩大0.5倍
+        if '1.5+' in cell_type:
+            x = int(x - w / 4)
+            y = int(y - h / 4)
+            w = int(3 * w / 2)
+            h = int(3 * h / 2)
+            cell_type = cell_type.replace("_1.5+", "")
+
+        # 处理 1.5- 图像，图像切图缩小0.5倍
+        if '1.5-' in cell_type:
+            x = int(x + w / 8)
+            y = int(y + h / 8)
+            w = int(7 * w / 8)
+            h = int(7 * h / 8)
+            cell_type = cell_type.replace("_1.5-", "")
+
         # 处理 2+ 图像，图像切图扩大两倍
         if '2+' in cell_type:
             x = int(x - w / 2)
             y = int(y - h / 2)
             w = 2 * w
             h = 2 * h
+            cell_type = cell_type.replace("_2+", "")
 
         # 处理 2- 图像，图像切图缩小两倍
         if '2-' in cell_type:
@@ -50,14 +67,12 @@ if __name__ == '__main__':
             y = int(y + h / 4)
             w = int(w / 2)
             h = int(h / 2)
+            cell_type = cell_type.replace("_2-", "")
 
         if tiff_name in tiff_cell_dict:
             tiff_cell_dict[tiff_name].append({"x": x, "y": y, "w": w, "h": h, "cell_type": cell_type})
         else:
             tiff_cell_dict[tiff_name] = [{"x": x, "y": y, "w": w, "h": h, "cell_type": cell_type}]
-
-    # print(len(tiff_cell_dict))
-    # exit()
 
     dict_size = len(tiff_cell_dict)
     print("START GENERATING XML FILES...")
