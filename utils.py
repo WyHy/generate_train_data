@@ -152,8 +152,8 @@ def generate_selected_level_xml(filename, point_lst):
         # assert cell_type in TYPE_to_COLOR_DICT, "THE CELL_TYPE [%s] IS NOT EXIST!" % cell_type
         cell_type_ = cell_type
 
-        if '_' in cell_type_:
-            cell_type_ = cell_type_.split("_")[0]
+        # if '_' in cell_type_:
+        #     cell_type_ = cell_type_.split("_")[0]
 
         if "2+" in cell_type_:
             exit()
