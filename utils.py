@@ -261,7 +261,7 @@ def get_location_from_filename(filename_string):
 
 
     # # 1-p0.6042_BD1607254-子宫内膜C_2018-10-09 16_42_03_x23043_y40485_w162_h218_2x.jpg
-    pattern03 = re.compile(r'1-p\d\.\d{4}_(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_?(\dx)?.jpg')
+    pattern03 = re.compile(r'1-p\d\.\d+_(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_?(\dx)?.jpg')
 
     if '_markedAs' in name:
         point = re.findall(pattern00, name)
