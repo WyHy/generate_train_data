@@ -7,10 +7,10 @@
 # 当前可识别病理类型 length = 12
 import os
 
-PATHOLOGY_TYPE_CLASSES = [  "HSIL_B",   "HSIL_M",   "HSIL_S",   "ASCH",     "LSIL_E",   "LSIL_F",   "ASCUS",    "SCC_G",    "SCC_R",    "EC",       "AGC",      "FUNGI",    "TRI",      "CC",       "ACTINO",   "VIRUS",    "MC",       "SC",      "RC",        "GEC", ]
+PATHOLOGY_TYPE_CLASSES = [  "HSIL",     "HSIL_B",   "HSIL_M",   "HSIL_S",   "ASCH",     "LSIL",     "LSIL_E",   "LSIL_F",   "ASCUS",    "SCC",    "SCC_G",    "SCC_R",    "EC",       "AGC",      "FUNGI",    "TRI",      "CC",       "ACTINO",   "VIRUS",    "MC",       "SC",      "RC",        "GEC", ]
 
 # 病理类型对应颜色 length = 12
-PATHOLOGY_TYPE_COLORS = [   "#aa0000",  "#aa0000",  "#aa0000",  "#aa007f",  "#005500",  "#005500",  "#00557f",  "#0055ff",  "#0055ff",  "#aa55ff",  "#ff5500",  "#00aa00",  "#00aa7f",  "#00aaff",  "#55aa00",  "#55aa7f",  "#000000",  "#aa00ff",  "#ff0000",  "#aa5500", ]
+PATHOLOGY_TYPE_COLORS = [   "#aa0000",  "#aa0000",  "#aa0000",  "#aa0000",  "#aa007f",  "#005500",  "#005500",  "#005500",  "#00557f",  "#0055ff",    "#0055ff",  "#0055ff",  "#aa55ff",  "#ff5500",  "#00aa00",  "#00aa7f",  "#00aaff",  "#55aa00",  "#55aa7f",  "#000000",  "#aa00ff",  "#ff0000",  "#aa5500", ]
 
 # 统一归为 AGC 类别的病理图像类别
 AGC_CLASSES = ['AGC1', 'AGC2', 'AGC3', 'ADC']
