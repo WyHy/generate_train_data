@@ -13,6 +13,9 @@ from utils import FilesScanner, generate_selected_level_xml
 if not os.path.exists(SELECTED_CELL_XML_SAVE_PATH):
     os.makedirs(SELECTED_CELL_XML_SAVE_PATH, exist_ok=True)
 
+
+NEGATIVE_CATEGORY_LST = ["SC", "RC", "MC", "GEC"]
+
 if __name__ == '__main__':
     # 读取指定位置的算法人员筛选后的细胞文件路径
     # cell_images_path = CELL_IMAGES_SAVE_PATH
@@ -30,10 +33,16 @@ if __name__ == '__main__':
 
     print("COLLECT POINT INFO FROM JPG FILES...")
     tiff_cell_dict = {}
+
+    negative_category_cell_count = 0
     for path in cell_images_lst:
         cell_type = os.path.basename(os.path.dirname(path))
         if "_" in cell_type:
             cell_type = cell_type.split("_")[0]
+
+        if cell_type in NEGATIVE_CATEGORY_LST:
+            negative_category_cell_count += 1
+            continue
 
         jpg = os.path.basename(path)
         point = re.findall(pattern00, jpg)
@@ -68,3 +77,4 @@ if __name__ == '__main__':
 
     print("TIFF COUNT: %s" % dict_size)
     print("CELL COUNT: %s" % len(cell_images_lst))
+    print("NEGATIVE CELL COUNT: %s" % negative_category_cell_count)
