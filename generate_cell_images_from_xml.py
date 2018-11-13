@@ -98,15 +98,15 @@ def generate_image_from_xml(xml_path, cell_save_path, tiff_dict):
 if __name__ == '__main__':
     # xmls_path = TRAIN_DATA_SAVE_PATH
     # 获取 xml 文件路径列表
-    # xmls = FilesScanner(CHECKED_CELL_XML_SAVE_PATH, ['.xml']).get_files()
-    xmls = FilesScanner(SELECTED_CELL_XML_SAVE_PATH, ['.xml']).get_files()
+    xmls = FilesScanner(CHECKED_CELL_XML_SAVE_PATH, ['.xml']).get_files()
+    # xmls = FilesScanner(SELECTED_CELL_XML_SAVE_PATH, ['.xml']).get_files()
 
     size = len(xmls)
 
     executor = ProcessPoolExecutor(max_workers=20)
     tasks = []
 
-    tif_path = '/home/cnn/Development/DATA/TRAIN_DATA/TIFFS'
+    tif_path = '/home/cnn/Development/DATA/TEST_20181111_PENG_ZHENGZHOU/TIFFS'
     tif_images_collections_path = os.path.join(METADATA_FILE_PATH, 'TIFF_IMAGES_PATH_DICT.txt')
     tiff_dict = generate_name_path_dict(tif_path, ['.tif', '.kfb'], tif_images_collections_path)
     # tiff_dict = generate_name_path_dict('', ['.tif', '.kfb'])
