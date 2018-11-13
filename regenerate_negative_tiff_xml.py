@@ -17,7 +17,7 @@ if __name__ == '__main__':
     # 读取指定位置的算法人员筛选后的细胞文件路径
     # cell_images_path = CELL_IMAGES_SAVE_PATH
 
-    cell_images_path = '/home/cnn/Development/DATA/BATCH_4_TRAIN_DATA/CELLS/'
+    cell_images_path = '/home/cnn/Development/DATA/NEGATIVE_TIFF_20181113/CELLS'
     print("SCANNING PATH %s..." % cell_images_path)
     cell_images_lst = FilesScanner(cell_images_path, ['.jpg']).get_files()
     print("CELLS COUNT: %s" % len(cell_images_lst))
@@ -32,6 +32,9 @@ if __name__ == '__main__':
     tiff_cell_dict = {}
     for path in cell_images_lst:
         cell_type = os.path.basename(os.path.dirname(path))
+        if "_" in cell_type:
+            cell_type = cell_type.split("_")[0]
+
         jpg = os.path.basename(path)
         point = re.findall(pattern00, jpg)
         if not point:
