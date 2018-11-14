@@ -83,7 +83,7 @@ def get_cell_image(path, ctype, parent_pathes):
             if items:
                 parent_name, x, y, w, h, _ = items[0]
             else:
-                raise Exception(items)
+                raise Exception("%s IS NOT ACCEPTED!" % basename)
                 exit()
 
             # parent_name = os.path.basename(parent).replace(' ', '-')
