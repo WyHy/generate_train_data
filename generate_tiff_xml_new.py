@@ -93,6 +93,7 @@ def get_cell_image(path, ctype, parent_pathes):
             try:
                 parent_path = parent_pathes[parent_name]
             except Exception as e:
+                print("%s NOT FOUND" % parent_name)
                 print("CANNOT FIND RELATIVE TIFF PATH INFO, %s\n%s" % (str(e), item))
                 exit()
 
