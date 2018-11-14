@@ -73,12 +73,12 @@ def get_cell_image(path, ctype, parent_pathes):
 
             parent = os.path.dirname(parent)
 
-            point = re.findall(pattern00, item)
-            if not point:
-                point = re.findall(pattern01, item)
+            items = re.findall(pattern00, item)
+            if not items:
+                items = re.findall(pattern01, item)
 
             if items:
-                parent_name, x, y, w, h, _ = point[0]
+                parent_name, x, y, w, h, _ = items[0]
             else:
                 raise Exception(items)
                 exit()
