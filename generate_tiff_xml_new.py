@@ -199,12 +199,12 @@ def generate_xml_file(points_collection, tif_images):
 if __name__ == '__main__':
     # 大图存储位置
     tif_path = [
-        '/home/cnn/Development/DATA/TEST_20181111_PENG_ZHENGZHOU/TIFFS',
+        '/home/cnn/Development/DATA/TRAIN_DATA/TIFFS/',
     ]
 
     # 自动标注细胞图像存储位置
     auto_path = [
-        '/home/cnn/Development/DATA/TEST_20181111_PENG_ZHENGZHOU/CELLS',
+        '/home/cnn/Development/DATA/NEGATIVE_TIFF_20181113/CELLS',
     ]
 
     # 1. 检查大图 名称与路径对应关系 txt 文件是否存在， 生成生成大图文件名与路径 dict
