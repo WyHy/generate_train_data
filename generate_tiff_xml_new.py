@@ -56,6 +56,12 @@ def get_cell_image(path, ctype, parent_pathes):
     # 根据细胞图像文件名生成细胞坐标信息
     cells_dict = {}
 
+    # # 1-p0.6042_BD1607254-子宫内膜C_2018-10-09 16_42_03_x23043_y40485_w162_h218_2x.jpg
+    pattern00 = re.compile(r'1-p\d\.\d+_(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)(_\dx)?.jpg')
+
+    # 2018-03-22-11_26_58_x15789_y31806_w63_h61_s385.jpg
+    pattern01 = re.compile(r'(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)(_s\d+)?.jpg')
+
     for item in files:
         if item.endswith('.jpg'):
             # 细胞图文件名
@@ -66,11 +72,13 @@ def get_cell_image(path, ctype, parent_pathes):
             clas_type = os.path.basename(parent)
 
             parent = os.path.dirname(parent)
-            # 细胞所属大图名称
-            pattern = re.compile(r'1\-p0\.\d+_(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_?(\dx)?.jpg')
-            items = re.findall(pattern, basename)
+
+            point = re.findall(pattern00, item)
+            if not point:
+                point = re.findall(pattern01, item)
+
             if items:
-                parent_name, x, y, w, h, _ = items[0]
+                parent_name, x, y, w, h, _ = point[0]
             else:
                 raise Exception(items)
                 exit()
