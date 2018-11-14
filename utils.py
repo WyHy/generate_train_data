@@ -301,6 +301,8 @@ def generate_name_path_dict(path, postfix=None, output_file_path=None):
     else:
         files_collection = FilesScanner(path, postfix).get_files()
 
+    print(files_collection)
+
     dict_ = {}
     for file in files_collection:
         key, _ = os.path.splitext(os.path.basename(file))
