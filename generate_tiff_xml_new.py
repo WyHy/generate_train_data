@@ -219,7 +219,7 @@ if __name__ == '__main__':
 
     # 自动标注细胞图像存储位置
     auto_path = [
-        '/home/cnn/Development/DATA/PAIYIN_20181114/CELLS/',
+        '/home/cnn/Development/DATA/BATCH_5_TRAIN_DATA_20181114/CELLS/',
     ]
 
     # 1. 检查大图 名称与路径对应关系 txt 文件是否存在， 生成生成大图文件名与路径 dict
