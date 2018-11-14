@@ -114,12 +114,12 @@ def get_cell_image(path, ctype, parent_pathes):
             if clas_type not in PATHOLOGY_TYPE_CLASSES:
                 raise Exception(item + " CELL_TYPE NOT FOUND")
 
-            # 解析与修正大图分类
-            if '_' in parent_type:
-                parent_type = parent_type.split('_')[-1]
-
-            if '-' in parent_type:
-                parent_type = parent_type.split('-')[-1]
+            # # 解析与修正大图分类
+            # if '_' in parent_type:
+            #     parent_type = parent_type.split('_')[-1]
+            #
+            # if '-' in parent_type:
+            #     parent_type = parent_type.split('-')[-1]
 
             if parent_type in AGC_CLASSES:
                 parent_type = 'AGC'
