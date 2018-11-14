@@ -71,6 +71,9 @@ def get_cell_image(path, ctype, parent_pathes):
             # 细胞所属类别
             clas_type = os.path.basename(parent)
 
+            if "_NEW" in clas_type:
+                clas_type = clas_type.split("_")[0]
+
             parent = os.path.dirname(parent)
 
             items = re.findall(pattern00, basename)
