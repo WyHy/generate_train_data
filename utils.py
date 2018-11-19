@@ -1,11 +1,12 @@
 # coding: utf-8
 
 import os
+import random
 import re
 import shutil
-import random
-from xml.dom.minidom import parse, parseString
+import socket
 import xml.etree.ElementTree as ET
+from xml.dom.minidom import parse, parseString
 
 from constants import TYPE_to_COLOR_DICT, PATHOLOGY_TYPE_CLASSES, TIFF_IMAGE_RESOURCE_PATH, \
     REMOTE_PATH_FLAG, LABELME_DEFAULT_IMAGE_SIZE, LABELME_DEFAULT_XML_OUTPUT_PATH
@@ -88,7 +89,7 @@ def generate_checked_level_xml(filename, point_lst):
         cell_type = point['cell_type']
         if '_' in cell_type:
             cell_type = cell_type.split('_')[0]
-            
+
         assert cell_type in TYPE_to_COLOR_DICT, "THE CELL_TYPE [%s] IS NOT EXIST!" % cell_type
 
         annotation = ET.SubElement(annotations, "Annotation")
@@ -157,7 +158,6 @@ def generate_selected_level_xml(filename, point_lst):
 
         if "2+" in cell_type_:
             exit()
-
 
         annotation = ET.SubElement(annotations, "Annotation")
         annotation.attrib = {
@@ -258,7 +258,6 @@ def get_location_from_filename(filename_string):
     # 1-p0.0987_TC17013562_x28691_y23628_w64_h61_.jpg
     # 1-p0.0033_TC18018765_x28205_y36889_w41_h52_2x.jpg
     pattern02 = re.compile(r'.*?_([A-Z]+\d+)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_?(\dx)?.jpg')
-
 
     # # 1-p0.6042_BD1607254-子宫内膜C_2018-10-09 16_42_03_x23043_y40485_w162_h218_2x.jpg
     pattern03 = re.compile(r'1-p\d\.\d+_(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_?(\dx)?.jpg')
@@ -418,7 +417,8 @@ def read_from_labelme_xml(xml_files_path):
     return lst
 
 
-def write_to_labelme_xml(points_dict, xml_save_path=LABELME_DEFAULT_XML_OUTPUT_PATH, image_size=LABELME_DEFAULT_IMAGE_SIZE):
+def write_to_labelme_xml(points_dict, xml_save_path=LABELME_DEFAULT_XML_OUTPUT_PATH,
+                         image_size=LABELME_DEFAULT_IMAGE_SIZE):
     """
     将标注点信息写入 xml 文件， 用于 Labelme 审核
     :param points_dict:
@@ -470,6 +470,25 @@ def write_to_labelme_xml(points_dict, xml_save_path=LABELME_DEFAULT_XML_OUTPUT_P
             o.write(reparsed.toprettyxml(indent="\t"))
 
 
+def get_host_ip():
+    """
+    get host ip address
+    :return:
+    """
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(('8.8.8.8', 80))
+        ip = s.getsockname()[0]
+
+        return ip
+    finally:
+        s.close()
+
+    return None
+
+
 if __name__ == '__main__':
     filename = '1-p0.0000_markedAs_ACTINO_2018-06-20_18_37_06_x34602_y10123_w145_h172_2x.jpg'
     print(get_location_from_filename(filename))
+
+    print(get_host_ip())
