@@ -112,11 +112,11 @@ def get_cell_image(path, ctype, parent_pathes):
             w = 2 * w
             h = 2 * h
 
-            if '_' in clas_type:
-                clas_type = clas_type.split('_')[0]
-
-            if '-' in clas_type:
-                clas_type = clas_type.split('-')[0]
+            # if '_' in clas_type:
+            #     clas_type = clas_type.split('_')[0]
+            #
+            # if '-' in clas_type:
+            #     clas_type = clas_type.split('-')[0]
 
             # 修正 AGC 细胞类别
             if clas_type in AGC_CLASSES:
