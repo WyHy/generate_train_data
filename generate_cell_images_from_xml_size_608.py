@@ -100,7 +100,7 @@ def generate_image_from_xml(xml_path, cell_save_path, tiff_dict):
             print(e)
             print(x_, y_, w_, h_)
             print(slide.dimensions)
-            exit()
+            continue
 
     return None
 
