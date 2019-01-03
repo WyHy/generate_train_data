@@ -48,7 +48,7 @@ def get_cell_image(path, ctype, parent_pathes):
     #     with open(os.path.join(METADATA_FILE_PATH, image_path_info_dict_path)) as f:
     #         files = [item.replace('\n', '') for item in f.readlines()]
     # else:
-    files = FilesScanner(path, ['.bmp']).get_files()
+    files = FilesScanner(path, ['.bmp', '.jpg']).get_files()
     # with open(os.path.join(METADATA_FILE_PATH, image_path_info_dict_path), 'w') as o:
     #     o.writelines([item + '\n' for item in files])
 
@@ -56,10 +56,10 @@ def get_cell_image(path, ctype, parent_pathes):
     cells_dict = {}
 
     # # 1-p0.6042_BD1607254-子宫内膜C_2018-10-09 16_42_03_x23043_y40485_w162_h218_2x.jpg
-    pattern00 = re.compile(r'1-p\d\.\d+_(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)(_\dx)?.bmp')
+    pattern00 = re.compile(r'1-p\d\.\d+_(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)(_\dx)?.(bmp|jpg)')
 
     # 2018-03-22-11_26_58_x15789_y31806_w63_h61_s385.jpg
-    pattern01 = re.compile(r'(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)(_s\d+)?.bmp')
+    pattern01 = re.compile(r'(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)(_s\d+)?.(bmp|jpg)')
 
     for item in files:
         if item.endswith('.bmp'):
@@ -106,30 +106,9 @@ def get_cell_image(path, ctype, parent_pathes):
             _, x, y, w, h, _ = point
             x, y, w, h = int(x), int(y), int(w), int(h)
 
-            # x = x - w / 2
-            # y = y - h / 2
-            # w = 2 * w
-            # h = 2 * h
-
-            # if '_' in clas_type:
-            #     clas_type = clas_type.split('_')[0]
-            #
-            # if '-' in clas_type:
-            #     clas_type = clas_type.split('-')[0]
-
             # 修正 AGC 细胞类别
             if clas_type in AGC_CLASSES:
                 clas_type = 'AGC'
-
-            # if clas_type not in PATHOLOGY_TYPE_CLASSES:
-            #     raise Exception(item + " CELL_TYPE NOT FOUND")
-
-            # # 解析与修正大图分类
-            # if '_' in parent_type:
-            #     parent_type = parent_type.split('_')[-1]
-            #
-            # if '-' in parent_type:
-            #     parent_type = parent_type.split('-')[-1]
 
             if parent_type in AGC_CLASSES:
                 parent_type = 'AGC'
