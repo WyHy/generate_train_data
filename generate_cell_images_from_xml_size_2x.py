@@ -62,7 +62,7 @@ def generate_image_from_xml(xml_path, cell_save_path, tiff_dict):
         print("TIFF OPEN FAILED => %s" % tiff_file_path)
         return tiff_file_path
 
-    mpp = big_image_obj.properties['openslide.mpp-x']
+    mpp = slide.properties['openslide.mpp-x']
 
     near_20x = abs(float(mpp) - 0.5)
     near_40x = abs(float(mpp) - 0.25)
