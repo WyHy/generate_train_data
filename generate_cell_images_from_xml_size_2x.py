@@ -62,15 +62,18 @@ def generate_image_from_xml(xml_path, cell_save_path, tiff_dict):
         print("TIFF OPEN FAILED => %s" % tiff_file_path)
         return tiff_file_path
 
-    mpp = slide.properties['openslide.mpp-x']
+    if xml_path.endswith(".kfb"):
+        mpp = slide.properties['openslide.mpp-x']
 
-    near_20x = abs(float(mpp) - 0.5)
-    near_40x = abs(float(mpp) - 0.25)
+        near_20x = abs(float(mpp) - 0.5)
+        near_40x = abs(float(mpp) - 0.25)
 
-    if near_20x < near_40x:
+        if near_20x < near_40x:
+            mpp = 20
+        if near_40x < near_20x:
+            mpp = 40
+    else:
         mpp = 20
-    if near_40x < near_20x:
-        mpp = 40
 
 
     # class_count = dict(zip(PATHOLOGY_TYPE_CLASSES, [0] % len(PATHOLOGY_TYPE_CLASSES)))
