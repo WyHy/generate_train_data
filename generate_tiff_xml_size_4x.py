@@ -106,11 +106,11 @@ def get_cell_image(path, ctype, parent_pathes):
             _, x, y, w, h, _ = point
             x, y, w, h = int(x), int(y), int(w), int(h)
 
-            # expand to size * 2
-            x = x - w / 2
-            y = y - h / 2
-            w = 2 * w
-            h = 2 * h
+            # # expand to size * 2
+            # x = x - w / 2
+            # y = y - h / 2
+            # w = 2 * w
+            # h = 2 * h
 
             # if '_' in clas_type:
             #     clas_type = clas_type.split('_')[0]
