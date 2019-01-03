@@ -81,7 +81,7 @@ def generate_image_from_xml(xml_path, cell_save_path, tiff_dict):
 
         size = 608
 
-        x_, y_, w_, h_ = int(x - size / 2), int(y - size / 2), int(size), int(size)
+        x_, y_, w_, h_ = int(x - w / 2 + size / 2), int(y - h / 2 + size / 2), int(size), int(size)
 
         class_type = cell.getAttribute("Type")
 
