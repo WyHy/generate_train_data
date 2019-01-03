@@ -48,7 +48,8 @@ def gen_slide_names(path):
 
         if items:
             parent_name, x, y, w, h, _ = items[0]
-            names.append(parent_name)
+            if parent_name not in names:
+                names.append(parent_name)
         else:
             raise Exception("%s IS NOT ACCEPTED!" % basename)
             exit()
