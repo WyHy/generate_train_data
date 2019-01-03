@@ -65,7 +65,7 @@ if __name__ == '__main__':
     total = len(auto_path)
     for index, path in enumerate(auto_path):
         print("LOAD %s / %s ..." % (index + 1, total))
-        names = get_cell_image(path, 'AUTO', tif_images)
+        names = gen_slide_names(path)
         with open("./works_slide_names.txt", 'w') as o:
             for name in names:
                 o.write("%s\n" % name)
