@@ -56,13 +56,13 @@ def get_cell_image(path, ctype, parent_pathes):
     cells_dict = {}
 
     # # 1-p0.6042_BD1607254-子宫内膜C_2018-10-09 16_42_03_x23043_y40485_w162_h218_2x.jpg
-    pattern00 = re.compile(r'1-p\d\.\d+_(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)(_\dx)?.jpg')
+    pattern00 = re.compile(r'1-p\d\.\d+_(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)(_\dx)?.(bmp|jpg)')
 
     # 2018-03-22-11_26_58_x15789_y31806_w63_h61_s385.jpg
-    pattern01 = re.compile(r'(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)(_s\d+)?.jpg')
+    pattern01 = re.compile(r'(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)(_s\d+)?.(bmp|jpg)')
 
     for item in files:
-        if item.endswith('.jpg'):
+        if True:
             # 细胞图文件名
             basename = os.path.basename(item).replace(' ', '-')
 
@@ -80,7 +80,7 @@ def get_cell_image(path, ctype, parent_pathes):
                 items = re.findall(pattern01, basename)
 
             if items:
-                parent_name, x, y, w, h, _ = items[0]
+                parent_name, x, y, w, h, *_ = items[0]
             else:
                 raise Exception("%s IS NOT ACCEPTED!" % basename)
                 exit()
@@ -103,7 +103,7 @@ def get_cell_image(path, ctype, parent_pathes):
             point = get_location_from_filename(basename)
             assert point, "THIS JPG NAME IS NOT ACCEPTED => %s" % basename
 
-            _, x, y, w, h, _ = point
+            _, x, y, w, h, *_ = point
             x, y, w, h = int(x), int(y), int(w), int(h)
 
             # expand to size * 2

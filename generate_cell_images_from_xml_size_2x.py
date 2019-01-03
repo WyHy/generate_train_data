@@ -85,10 +85,10 @@ def generate_image_from_xml(xml_path, cell_save_path, tiff_dict):
         h = int(cell.getAttribute("H"))
 
         # expand to size * 2
-        x_ = x - w / 2
-        y_ = y - h / 2
-        w_ = 2 * w
-        h_ = 2 * h
+        x_ = int(x - w / 2)
+        y_ = int(y - h / 2)
+        w_ = int(2 * w)
+        h_ = int(2 * h)
 
         class_type = cell.getAttribute("Type")
 
@@ -125,7 +125,7 @@ if __name__ == '__main__':
 
     size = len(xmls)
 
-    executor = ProcessPoolExecutor(max_workers=10)
+    executor = ProcessPoolExecutor(max_workers=5)
     tasks = []
 
     tif_path = '/home/cnn/Development/DATA/TRAIN_DATA/TIFFS'

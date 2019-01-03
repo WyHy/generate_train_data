@@ -22,7 +22,7 @@ TYPE_to_COLOR_DICT = dict(zip(PATHOLOGY_TYPE_CLASSES, PATHOLOGY_TYPE_COLORS))
 COLOR_to_TYPE_DICT = dict(zip(PATHOLOGY_TYPE_COLORS, PATHOLOGY_TYPE_CLASSES))
 
 # 数据存储根目录
-DATA_RESOURCE_ROOT_PATH = os.path.join(os.environ['HOME'] + "/Development/DATA/NEW_REQUIREMENT_4X/")
+DATA_RESOURCE_ROOT_PATH = os.path.join(os.environ['HOME'] + "/Development/DATA/NEW_REQUIREMENT_2X/")
 # DATA_RESOURCE_ROOT_PATH = os.path.join("C:/" + "/Development/DATA/TRAIN_DATA")
 
 # 病理图像本地资源库路径
