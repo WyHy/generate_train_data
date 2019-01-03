@@ -90,11 +90,17 @@ def generate_image_from_xml(xml_path, cell_save_path, tiff_dict):
             os.makedirs(save_path, exist_ok=True)
 
         image_name = "%s_x%s_y%s_w%s_h%s.bmp" % (xml_name, x, y, size, size)
-        patch = slide.read_region((x_, y_), 0, (w_, h_))
-        patch = patch.convert("RGB")
-        patch.save(os.path.join(save_path, image_name)) 
-        #patch = cv2.cvtColor(np.asarray(patch), cv2.COLOR_RGBA2BGR)
-        #cv2.imwrite(os.path.join(save_path, image_name), patch, [int(cv2.IMWRITE_JPEG_QUALITY), 95])
+        try:
+            patch = slide.read_region((x_, y_), 0, (w_, h_))
+            patch = patch.convert("RGB")
+            patch.save(os.path.join(save_path, image_name)) 
+            #patch = cv2.cvtColor(np.asarray(patch), cv2.COLOR_RGBA2BGR)
+            #cv2.imwrite(os.path.join(save_path, image_name), patch, [int(cv2.IMWRITE_JPEG_QUALITY), 95])
+        except Exception as e:
+            print(e)
+            print(x_, y_, w_, h_)
+            print(slide.dimensions)
+            exit()
 
     return None
 
