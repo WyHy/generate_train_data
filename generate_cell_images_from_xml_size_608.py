@@ -89,7 +89,7 @@ def generate_image_from_xml(xml_path, cell_save_path, tiff_dict):
         if not os.path.exists(save_path):
             os.makedirs(save_path, exist_ok=True)
 
-        image_name = "%s_x%s_y%s_w%s_h%s.bmp" % (xml_name, x, y, size, size)
+        image_name = "%s_x%s_y%s_w%s_h%s.bmp" % (xml_name, x_, y_, w_, h_)
         try:
             patch = slide.read_region((x_, y_), 0, (w_, h_))
             patch = patch.convert("RGB")
