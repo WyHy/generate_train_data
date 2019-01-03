@@ -246,24 +246,24 @@ def get_location_from_filename(filename_string):
     # 1-p0.0000_markedAs_ASCH_2017-10-27-16_12_50_x9659_y28027_w616_h331.jpg
     # 1-p0.0000_markedAs_CC_2018-03-27-23_18_27_x5675_y23431_w230_h207_4x.jpg
     # 1-p0.0000_markedAs_ACTINO_2018-06-20_18_37_06_x34602_y10123_w145_h172_2x.jpg
-    pattern00 = re.compile(r'.*?_markedAs_.*?_(\d+\-\d+\-\d+[\-_]\d+_\d+_\d+)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_?(\dx)?.jpg')
+    pattern00 = re.compile(r'.*?_markedAs_.*?_(\d+\-\d+\-\d+[\-_]\d+_\d+_\d+)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_?(\dx)?.bmp')
 
     # 1-p0.0000_2017-11-24-13_16_54_x6626_y35845_w150_h79_4x.jpg
     # 1-p0.0001_2017-10-09-17_12_28_x19230_y29594_w370_h910_.jpg
     # m1_2018-04-04-17_50_08_x11194_y33583_w163_h112.jpg
     # m1_2018-06-20_18_37_06_x10880_y42947_w113_h122.jpg
-    pattern01 = re.compile(r'.*?_(\d+\-\d+\-\d+[\-_]\d+_\d+_\d+)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_?(\dx)?.jpg')
+    pattern01 = re.compile(r'.*?_(\d+\-\d+\-\d+[\-_]\d+_\d+_\d+)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_?(\dx)?.bmp')
 
     # 1-p0.0000_TC17033982_x21065_y14444_w56_h49_.jpg
     # 1-p0.0987_TC17013562_x28691_y23628_w64_h61_.jpg
     # 1-p0.0033_TC18018765_x28205_y36889_w41_h52_2x.jpg
-    pattern02 = re.compile(r'.*?_([A-Z]+\d+)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_?(\dx)?.jpg')
+    pattern02 = re.compile(r'.*?_([A-Z]+\d+)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_?(\dx)?.bmp')
 
     # # 1-p0.6042_BD1607254-子宫内膜C_2018-10-09 16_42_03_x23043_y40485_w162_h218_2x.jpg
-    pattern03 = re.compile(r'1-p\d\.\d+_(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_?(\dx)?.jpg')
+    pattern03 = re.compile(r'1-p\d\.\d+_(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)_?(\dx)?.bmp')
 
     # 2017-10-19-09_21_43_x42903_y48412_w126_h192_s20.jpg
-    pattern04 = re.compile(r'(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)(_s\d+)?.jpg')
+    pattern04 = re.compile(r'(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)(_s\d+)?.bmp')
 
     if '_markedAs' in name:
         point = re.findall(pattern00, name)
