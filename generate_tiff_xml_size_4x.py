@@ -16,11 +16,10 @@
 import json
 import os
 import re
-from copy import deepcopy
-from concurrent.futures import ProcessPoolExecutor, as_completed
 
-from constants import PATHOLOGY_TYPE_CLASSES, METADATA_FILE_PATH, AGC_CLASSES, CHECKED_CELL_XML_SAVE_PATH, ACCEPTED_OVERLAPPED_RATIO, TIFF_IMAGE_RESOURCE_PATH
-from utils import FilesScanner, generate_checked_level_xml, cal_IOU, get_location_from_filename, generate_name_path_dict
+from constants import PATHOLOGY_TYPE_CLASSES, METADATA_FILE_PATH, AGC_CLASSES, CHECKED_CELL_XML_SAVE_PATH, \
+    TIFF_IMAGE_RESOURCE_PATH
+from utils import FilesScanner, generate_checked_level_xml, get_location_from_filename, generate_name_path_dict
 
 if not os.path.exists(METADATA_FILE_PATH):
     os.makedirs(METADATA_FILE_PATH, exist_ok=True)
@@ -49,21 +48,21 @@ def get_cell_image(path, ctype, parent_pathes):
     #     with open(os.path.join(METADATA_FILE_PATH, image_path_info_dict_path)) as f:
     #         files = [item.replace('\n', '') for item in f.readlines()]
     # else:
-    files = FilesScanner(path, ['.jpg']).get_files()
-        # with open(os.path.join(METADATA_FILE_PATH, image_path_info_dict_path), 'w') as o:
-        #     o.writelines([item + '\n' for item in files])
+    files = FilesScanner(path, ['.bmp']).get_files()
+    # with open(os.path.join(METADATA_FILE_PATH, image_path_info_dict_path), 'w') as o:
+    #     o.writelines([item + '\n' for item in files])
 
     # 根据细胞图像文件名生成细胞坐标信息
     cells_dict = {}
 
     # # 1-p0.6042_BD1607254-子宫内膜C_2018-10-09 16_42_03_x23043_y40485_w162_h218_2x.jpg
-    pattern00 = re.compile(r'1-p\d\.\d+_(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)(_\dx)?.jpg')
+    pattern00 = re.compile(r'1-p\d\.\d+_(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)(_\dx)?.bmp')
 
     # 2018-03-22-11_26_58_x15789_y31806_w63_h61_s385.jpg
-    pattern01 = re.compile(r'(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)(_s\d+)?.jpg')
+    pattern01 = re.compile(r'(.*?)_x(\d+)_y(\d+)_w(\d+)_h(\d+)(_s\d+)?.bmp')
 
     for item in files:
-        if item.endswith('.jpg'):
+        if item.endswith('.bmp'):
             # 细胞图文件名
             basename = os.path.basename(item).replace(' ', '-')
 
@@ -107,27 +106,24 @@ def get_cell_image(path, ctype, parent_pathes):
             _, x, y, w, h, _ = point
             x, y, w, h = int(x), int(y), int(w), int(h)
 
-            if '2+' in clas_type:
-                x = x - w / 2
-                y = y - h / 2
-                w = 2 * w
-                h = 2 * h
+            # expand to size * 2
+            x = x - w / 2
+            y = y - h / 2
+            w = 2 * w
+            h = 2 * h
 
-            """
-            if '_' in clas_type:
-                clas_type = clas_type.split('_')[0]
-
-            if '-' in clas_type:
-                clas_type = clas_type.split('-')[0]
-
+            # if '_' in clas_type:
+            #     clas_type = clas_type.split('_')[0]
+            #
+            # if '-' in clas_type:
+            #     clas_type = clas_type.split('-')[0]
 
             # 修正 AGC 细胞类别
             if clas_type in AGC_CLASSES:
                 clas_type = 'AGC'
 
-            if clas_type not in PATHOLOGY_TYPE_CLASSES:
-                raise Exception(item + " CELL_TYPE NOT FOUND")
-            """
+            # if clas_type not in PATHOLOGY_TYPE_CLASSES:
+            #     raise Exception(item + " CELL_TYPE NOT FOUND")
 
             # # 解析与修正大图分类
             # if '_' in parent_type:
@@ -140,8 +136,7 @@ def get_cell_image(path, ctype, parent_pathes):
                 parent_type = 'AGC'
 
             # if parent_type not in PATHOLOGY_TYPE_CLASSES:
-                # raise Exception(item + " PARENT_TYPE NOT FOUND")
-
+            # raise Exception(item + " PARENT_TYPE NOT FOUND")
 
             # 细胞位置及类别信息
             info = {
@@ -214,12 +209,12 @@ def generate_xml_file(points_collection, tif_images):
 if __name__ == '__main__':
     # 大图存储位置
     tif_path = [
-        '/home/cnn/Development/DATA/TRAIN_DATA/TIFFS/',
+        '/home/cnn/Development/DATA/TRAIN_DATA/TIFFS',
     ]
 
     # 自动标注细胞图像存储位置
     auto_path = [
-        '/home/cnn/Development/DATA/BATCH_6_1_TRAIN_DATA_20181213/CELLS/',
+        '/home/cnn/Development/DATA/NEW_REQUIREMENT_4X/CELLS',
     ]
 
     # 1. 检查大图 名称与路径对应关系 txt 文件是否存在， 生成生成大图文件名与路径 dict

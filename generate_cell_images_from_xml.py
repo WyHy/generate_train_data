@@ -87,10 +87,12 @@ def generate_image_from_xml(xml_path, cell_save_path, tiff_dict):
         if not os.path.exists(save_path):
             os.makedirs(save_path, exist_ok=True)
 
-        image_name = "%s_x%s_y%s_w%s_h%s.jpg" % (xml_name, x, y, w, h)
+        image_name = "%s_x%s_y%s_w%s_h%s.bmp" % (xml_name, x, y, w, h)
         patch = slide.read_region((x_, y_), 0, (w_, h_))
-        patch = cv2.cvtColor(np.asarray(patch), cv2.COLOR_RGBA2BGR)
-        cv2.imwrite(os.path.join(save_path, image_name), patch, [int(cv2.IMWRITE_JPEG_QUALITY), 95])
+        patch = patch.convert("RGB")
+        patch.save(os.path.join(save_path, image_name)) 
+        #patch = cv2.cvtColor(np.asarray(patch), cv2.COLOR_RGBA2BGR)
+        #cv2.imwrite(os.path.join(save_path, image_name), patch, [int(cv2.IMWRITE_JPEG_QUALITY), 95])
 
     return None
 
@@ -103,7 +105,7 @@ if __name__ == '__main__':
 
     size = len(xmls)
 
-    executor = ProcessPoolExecutor(max_workers=20)
+    executor = ProcessPoolExecutor(max_workers=10)
     tasks = []
 
     tif_path = '/home/cnn/Development/DATA/TRAIN_DATA/TIFFS'

@@ -7,10 +7,10 @@
 # 当前可识别病理类型 length = 12
 import os
 
-PATHOLOGY_TYPE_CLASSES = [  "HSIL",     "HSIL_B",   "HSIL_M",   "HSIL_S",   "ASCH",     "LSIL",     "LSIL_E",   "LSIL_F",   "ASCUS",    "SCC",    "SCC_G",    "SCC_R",    "EC",       "AGC",      "FUNGI",    "TRI",      "CC",       "ACTINO",   "VIRUS",    "MC",       "SC",      "RC",        "GEC", ]
+PATHOLOGY_TYPE_CLASSES = [  "HSIL",     "HSIL_B",   "HSIL_M",   "HSIL_S",   "ASCH",     "LSIL",     "LSIL_E",   "LSIL_F",   "ASCUS",    "SCC",    "SCC_G",    "SCC_R",    "EC",       "AGC_A",  "AGC_B",    "AGC",      "FUNGI",    "TRI",      "CC",       "ACTINO",   "VIRUS",    "MC",       "SC",      "RC",        "GEC", ]
 
 # 病理类型对应颜色 length = 12
-PATHOLOGY_TYPE_COLORS = [   "#aa0000",  "#aa0000",  "#aa0000",  "#aa0000",  "#aa007f",  "#005500",  "#005500",  "#005500",  "#00557f",  "#0055ff",    "#0055ff",  "#0055ff",  "#aa55ff",  "#ff5500",  "#00aa00",  "#00aa7f",  "#00aaff",  "#55aa00",  "#55aa7f",  "#000000",  "#aa00ff",  "#ff0000",  "#aa5500", ]
+PATHOLOGY_TYPE_COLORS = [   "#aa0000",  "#aa0000",  "#aa0000",  "#aa0000",  "#aa007f",  "#005500",  "#005500",  "#005500",  "#00557f",  "#0055ff",    "#0055ff",  "#0055ff",  "#aa55ff",  "#ff5500",  "#ff5500", "#ff5500", "#00aa00",  "#00aa7f",  "#00aaff",  "#55aa00",  "#55aa7f",  "#000000",  "#aa00ff",  "#ff0000",  "#aa5500", ]
 
 # 统一归为 AGC 类别的病理图像类别
 AGC_CLASSES = ['AGC1', 'AGC2', 'AGC3', 'ADC']
@@ -22,11 +22,11 @@ TYPE_to_COLOR_DICT = dict(zip(PATHOLOGY_TYPE_CLASSES, PATHOLOGY_TYPE_COLORS))
 COLOR_to_TYPE_DICT = dict(zip(PATHOLOGY_TYPE_COLORS, PATHOLOGY_TYPE_CLASSES))
 
 # 数据存储根目录
-DATA_RESOURCE_ROOT_PATH = os.path.join(os.environ['HOME'] + "/Development/DATA/NEGATIVE_TIFF_20181113/")
+DATA_RESOURCE_ROOT_PATH = os.path.join(os.environ['HOME'] + "/Development/DATA/NEW_REQUIREMENT_4X/")
 # DATA_RESOURCE_ROOT_PATH = os.path.join("C:/" + "/Development/DATA/TRAIN_DATA")
 
 # 病理图像本地资源库路径
-TIFF_IMAGE_RESOURCE_PATH = os.path.join(os.environ['HOME'], "/Development/DATA/TEST_20181111_PENG_ZHENGZHOU/TIFFS")
+TIFF_IMAGE_RESOURCE_PATH = os.path.join(os.environ['HOME'], "/home/cnn/Development/DATA/TRAIN_DATA/TIFFS/")
 
 # 中间数据文件生成目录
 METADATA_FILE_PATH = os.path.join(DATA_RESOURCE_ROOT_PATH, "META")
