@@ -106,38 +106,14 @@ def get_cell_image(path, ctype, parent_pathes):
             _, x, y, w, h, *_ = point
             x, y, w, h = int(x), int(y), int(w), int(h)
 
-            # expand to size * 2
-            x = x - w / 2
-            y = y - h / 2
-            w = 2 * w
-            h = 2 * h
-
-            # if '_' in clas_type:
-            #     clas_type = clas_type.split('_')[0]
-            #
-            # if '-' in clas_type:
-            #     clas_type = clas_type.split('-')[0]
 
             # 修正 AGC 细胞类别
             if clas_type in AGC_CLASSES:
                 clas_type = 'AGC'
 
-            # if clas_type not in PATHOLOGY_TYPE_CLASSES:
-            #     raise Exception(item + " CELL_TYPE NOT FOUND")
-
-            # # 解析与修正大图分类
-            # if '_' in parent_type:
-            #     parent_type = parent_type.split('_')[-1]
-            #
-            # if '-' in parent_type:
-            #     parent_type = parent_type.split('-')[-1]
-
             if parent_type in AGC_CLASSES:
                 parent_type = 'AGC'
-
-            # if parent_type not in PATHOLOGY_TYPE_CLASSES:
-            # raise Exception(item + " PARENT_TYPE NOT FOUND")
-
+                
             # 细胞位置及类别信息
             info = {
                 'name': basename,
