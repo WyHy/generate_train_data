@@ -107,10 +107,10 @@ def get_cell_image(path, ctype, parent_pathes):
             x, y, w, h = int(x), int(y), int(w), int(h)
 
             # expand to size * 2
-            x = x - w / 2
-            y = y - h / 2
-            w = 2 * w
-            h = 2 * h
+            # x = x - w / 2
+            # y = y - h / 2
+            # w = 2 * w
+            # h = 2 * h
 
             # if '_' in clas_type:
             #     clas_type = clas_type.split('_')[0]
@@ -209,7 +209,7 @@ def generate_xml_file(points_collection, tif_images):
 if __name__ == '__main__':
     # 大图存储位置
     tif_path = [
-        '/home/cnn/Development/DATA/TRAIN_DATA/TIFFS',
+        '/home/cnn/Development/DATA/TRAIN_DATA/TIFFS/SLIDE_4X/',
     ]
 
     # 自动标注细胞图像存储位置
@@ -247,6 +247,8 @@ if __name__ == '__main__':
     print('LOAD AUTO IMAGES INFO COLLECTIONS...')
     count = 0
     points_collection = {}
+
+    print('BD1505262' in tif_images)
 
     total = len(auto_path)
     for index, path in enumerate(auto_path):
